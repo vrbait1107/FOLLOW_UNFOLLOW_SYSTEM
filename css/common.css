@@ -1,0 +1,261 @@
+/* font color classes */
+.text-blue {
+  color: blue;
+}
+
+.text-orange {
+  color: orange;
+}
+
+.text-green {
+  color: green;
+}
+
+.text-yellow {
+  color: yellow;
+}
+
+.text-red {
+  color: red;
+}
+
+.text-skyblue {
+  color: skyblue;
+}
+
+.text-pink {
+  color: pink;
+}
+
+.text-orangered {
+  color: orangered;
+}
+
+/* margin-bottom classes */
+.mb-6 {
+  margin-bottom: 96px;
+}
+
+.mb-7 {
+  margin-bottom: 192px;
+}
+
+.mb-8 {
+  margin-bottom: 384px;
+}
+
+.mb-9 {
+  margin-bottom: 768px;
+}
+
+.mb-10 {
+  margin-bottom: 1536px;
+}
+
+.mb-11 {
+  margin-bottom: 3072px;
+}
+
+.mb-12 {
+  margin-bottom: 6144px;
+}
+
+.mb-13 {
+  margin-bottom: 12288px;
+}
+
+.mb-14 {
+  margin-bottom: 24576px;
+}
+
+.mb-15 {
+  margin-bottom: 49152px;
+}
+
+.mb-16 {
+  margin-bottom: 98304px;
+}
+
+.mb-17 {
+  margin-bottom: 196608px;
+}
+
+.mb-18 {
+  margin-bottom: 393216px;
+}
+
+.mb-19 {
+  margin-bottom: 786432px;
+}
+
+.mb-20 {
+  margin-bottom: 1572864px;
+}
+
+/* background color classes */
+.bg-blue {
+  background-color: blue;
+}
+
+.bg-orange {
+  background-color: orange;
+}
+
+.bg-green {
+  background-color: green;
+}
+
+.bg-yellow {
+  background-color: yellow;
+}
+
+.bg-red {
+  background-color: red;
+}
+
+.bg-skyblue {
+  background-color: skyblue;
+}
+
+.bg-pink {
+  background-color: pink;
+}
+
+.bg-orangered {
+  background-color: orangered;
+}
+
+.bg-aliceblue {
+  background-color: aliceblue;
+}
+
+.font-time {
+  font-family: "Times New Roman", Times, serif;
+  font-weight: bold;
+}
+
+.font-sans {
+  font-family: sans-serif;
+  font-weight: bold;
+}
+
+.mt-6 {
+  margin-top: 96px;
+}
+
+.mt-7 {
+  margin-top: 112px;
+}
+
+.mt-8 {
+  margin-top: 128px;
+}
+
+.mt-9 {
+  margin-top: 144px;
+}
+
+.mt-10 {
+  margin-top: 160px;
+}
+
+.mt-11 {
+  margin-top: 176px;
+}
+
+.mt-12 {
+  margin-top: 192px;
+}
+
+.mt-13 {
+  margin-top: 208px;
+}
+
+.mt-14 {
+  margin-top: 224px;
+}
+
+.mt-15 {
+  margin-top: 240px;
+}
+
+.mt-16 {
+  margin-top: 256px;
+}
+
+.mt-17 {
+  margin-top: 272px;
+}
+
+.mt-18 {
+  margin-top: 288px;
+}
+
+.mt-19 {
+  margin-top: 304px;
+}
+
+.mt-20 {
+  margin-top: 320px;
+}
+
+.pt-6 {
+  padding-top: 96px;
+}
+
+.pt-7 {
+  padding-top: 112px;
+}
+
+.pt-8 {
+  padding-top: 128px;
+}
+
+.pt-9 {
+  padding-top: 144px;
+}
+
+.pt-10 {
+  padding-top: 160px;
+}
+
+.pt-11 {
+  padding-top: 176px;
+}
+
+.pt-12 {
+  padding-top: 192px;
+}
+
+.pt-13 {
+  padding-top: 208px;
+}
+
+.pt-14 {
+  padding-top: 224px;
+}
+
+.pt-15 {
+  padding-top: 240px;
+}
+
+.pt-16 {
+  padding-top: 256px;
+}
+
+.pt-17 {
+  padding-top: 272px;
+}
+
+.pt-18 {
+  padding-top: 288px;
+}
+
+.pt-19 {
+  padding-top: 304px;
+}
+
+.pt-20 {
+  padding-top: 320px;
+}
+/*# sourceMappingURL=common.css.map */
