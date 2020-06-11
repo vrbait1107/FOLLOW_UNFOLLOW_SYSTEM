@@ -5,16 +5,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registration Page</title>
-  <?php include_once "includes/headerScripts.php"; ?>
+  <?php include_once "includes/headerScripts.php";?>
 </head>
 
 <body>
 
-  <main class="container mt-5">
+<!-- Navbar -->
+<?php include_once "includes/navbarLogin.php";?>
+
+  <main class="container my-5">
     <div class="row">
       <section class="col-md-6 offset-md-3">
-        <div class="card shadow p-5">
-          <h3 class="card-header font-time mb-3 text-uppercase">Register here</h3>
+
+          <h3 class="breadcrumb font-time mb-3 text-uppercase">Register here</h3>
 
           <form action="" method="post">
             <div class="form-group">
@@ -44,8 +47,8 @@
             <input type="submit" value="Register" class="btn btn-primary btn-block rounded-pill">
           </form>
 
-          <p class="my-2">Already Register? <a href="#">Please Login here</a></p>
-        </div>
+          <p class="my-2 font-sans">Already Register? <a href="login.php">Please Login here</a></p>
+
       </section>
     </div>
   </main>
