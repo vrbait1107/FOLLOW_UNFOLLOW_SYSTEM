@@ -1,3 +1,9 @@
+<?php
+// Creating Database Connection
+require_once "config.php";
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,6 +15,38 @@
 </head>
 
 <body>
+
+<?php
+
+if (isset($_POST["login"])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+
+    $sql = "SELECT password FROM user_information WHERE username= :username";
+    $result = $conn->prepare($sql);
+    $result->bindValue(":username", $username);
+    $result->execute();
+
+    $row = $result->fetch(PDO::FETCH_ASSOC);
+    $dbPassword = $row['password'];
+    $dbEmail = $row['email'];
+
+    if (password_verify($password, $dbPassword)) {
+
+        $_SESSION['user'] = $dbEmail;
+        header("location:index.php");
+
+    } else {
+        echo "<script>Swal.fire({
+              icon: 'error',
+              title: 'Unable to Login',
+              text: 'Please Check Your Credentials'
+            })</script>";
+
+    }
+}
+
+?>
 
 <!-- Navbar -->
 <?php include_once "includes/navbarLogin.php";?>
@@ -31,7 +69,7 @@
                 placeholder="Enter Your Password">
             </div>
 
-            <input type="submit" value="Login" class="btn btn-primary btn-block rounded-pill">
+            <input type="submit" value="Login" name="login" id= "login" class="btn btn-primary btn-block rounded-pill">
           </form>
 
           <p class="my-2 font-sans">Not have an account? <a href="register.php">Create Account here</a></p>
