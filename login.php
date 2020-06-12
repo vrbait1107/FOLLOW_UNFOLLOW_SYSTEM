@@ -57,7 +57,7 @@ if (isset($_POST["login"])) {
 
           <h3 class="breadcrumb font-time mb-3 text-uppercase">Login here</h3>
 
-          <form action="" method="post">
+          <form action="" method="post" onsubmit = "return loginValidation()">
             <div class="form-group">
               <label for="username">Username</label>
               <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username">
@@ -77,6 +77,10 @@ if (isset($_POST["login"])) {
       </section>
     </div>
   </main>
+
+  <?php include_once "includes/footerScripts.php";?>
+  <!-- Custom JS -->
+  <script src="js/login.js"></script>
 
 </body>
 
