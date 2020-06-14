@@ -22,20 +22,29 @@ const registerValidation = () => {
     return false;
   }
 
-  if (confirmPassword === "") {
-    Swal.fire({
-      icon: "warning",
-      title: "Warning",
-      text: "Confirm Password cannot be Empty",
-    });
-    return false;
-  }
-
   if (password === "") {
     Swal.fire({
       icon: "warning",
       title: "Warning",
       text: "Password cannot be Empty",
+    });
+    return false;
+  }
+
+  if (password.length < 6) {
+    Swal.fire({
+      icon: "warning",
+      title: "Warning",
+      text: "Password must be atleast 6 Character Long",
+    });
+    return false;
+  }
+
+  if (confirmPassword === "") {
+    Swal.fire({
+      icon: "warning",
+      title: "Warning",
+      text: "Confirm Password cannot be Empty",
     });
     return false;
   }

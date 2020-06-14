@@ -20,6 +20,7 @@ require_once "config.php";
   <?php
 
 if (isset($_POST["register"])) {
+
     $username = $_POST["username"];
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -29,33 +30,49 @@ if (isset($_POST["register"])) {
 
         $hashPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        // Query
-        $sql = "INSERT INTO user_information (username, email, password) VALUES (:username, :email, :password)";
-
-        //Preparing Query
+        $sql = "SELECT *  FROM user_information WHERE username= :username";
         $result = $conn->prepare($sql);
-
-        //Binding Values
         $result->bindValue(":username", $username);
-        $result->bindValue(":email", $email);
-        $result->bindValue(":password", $hashPassword);
-
-        // Executing Query
         $result->execute();
 
-        if ($result) {
+        if ($result->rowCount() > 0) {
             echo "<script>Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: 'Username Already Taken Try Another'
+              })</script>";
+
+        } else {
+
+            // Query
+            $sql = "INSERT INTO user_information (username, email, password) VALUES (:username, :email, :password)";
+
+            //Preparing Query
+            $result = $conn->prepare($sql);
+
+            //Binding Values
+            $result->bindValue(":username", $username);
+            $result->bindValue(":email", $email);
+            $result->bindValue(":password", $hashPassword);
+
+            // Executing Query
+            $result->execute();
+
+            if ($result) {
+                echo "<script>Swal.fire({
                 icon: 'success',
                 title: 'Success',
                 text: 'You are successfully registered '
               })</script>";
 
-        } else {
-            echo "<script>Swal.fire({
+            } else {
+                echo "<script>Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'You are failed to register'
               })</script>";
+
+            }
 
         }
 
