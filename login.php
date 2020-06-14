@@ -1,6 +1,11 @@
 <?php
 // Creating Database Connection
 require_once "config.php";
+session_start();
+
+if (isset($_SESSION['user'])) {
+    header("Location:index.php");
+}
 
 ?>
 
@@ -22,19 +27,21 @@ if (isset($_POST["login"])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $sql = "SELECT password FROM user_information WHERE username= :username";
+    $sql = "SELECT * FROM user_information WHERE username= :username OR email =:email";
     $result = $conn->prepare($sql);
     $result->bindValue(":username", $username);
+    $result->bindValue(":email", $username);
     $result->execute();
 
     $row = $result->fetch(PDO::FETCH_ASSOC);
     $dbPassword = $row['password'];
-    $dbEmail = $row['email'];
+    $userEmail = $row['email'];
 
     if (password_verify($password, $dbPassword)) {
 
-        $_SESSION['user'] = $dbEmail;
-        header("location:index.php");
+        $_SESSION['user'] = $userEmail;
+
+        header("Location:index.php");
 
     } else {
         echo "<script>Swal.fire({
@@ -59,8 +66,8 @@ if (isset($_POST["login"])) {
 
           <form action="" method="post" onsubmit = "return loginValidation()">
             <div class="form-group">
-              <label for="username">Username</label>
-              <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username">
+              <label for="username">Username/ Email</label>
+              <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username/Email">
             </div>
 
             <div class="form-group">
