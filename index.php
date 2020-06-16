@@ -16,7 +16,7 @@ if (!isset($_SESSION['user'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration Page</title>
+  <title>Follow Unfollow System</title>
   <?php include_once "includes/headerScripts.php";?>
 </head>
 
@@ -38,6 +38,8 @@ if (!isset($_SESSION['user'])) {
                 <textarea name="comment" id="comment" cols="30" rows="3" class="form-control"
                   placeholder="Write your story"></textarea>
               </div>
+              <!-- Response Message -->
+              <div id="responseMessage"></div>
               <Button type="submit" class="btn btn-primary float-right">Share</Button>
             </form>
           </div>
@@ -50,7 +52,8 @@ if (!isset($_SESSION['user'])) {
             Trending Now
           </div>
           <div class="card-body">
-            <h5>No Data Found</h5>
+            <!-- Response Data -->
+            <div id="responsePostData"></div>
           </div>
         </div>
       </section>
@@ -85,6 +88,8 @@ if (!isset($_SESSION['user'])) {
 
   <!-- include footer script -->
   <?php include_once "includes/footerScripts.php";?>
+  <!-- Local JS -->
+  <script src="js/index.js"></script>
 
 
 </body>

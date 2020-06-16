@@ -36,10 +36,12 @@ if (isset($_POST["login"])) {
     $row = $result->fetch(PDO::FETCH_ASSOC);
     $dbPassword = $row['password'];
     $userEmail = $row['email'];
+    $userId = $row['user_id'];
 
     if (password_verify($password, $dbPassword)) {
 
         $_SESSION['user'] = $userEmail;
+        $_SESSION['userId'] = $userId;
 
         header("Location:index.php");
 
