@@ -1,4 +1,5 @@
 let readingPost;
+let readingUserProfiles;
 
 $(document).ready(function () {
   // ########### READING RECORD
@@ -23,6 +24,30 @@ $(document).ready(function () {
 
   readingPost();
 
+  // ############# DISPLAYING USER PROFILES
+
+  readingUserProfiles = () => {
+    let readingProfiles = "readingProfiles";
+
+    $.ajax({
+      url: "ajaxHandlerPHP/ajaxIndex.php",
+      type: "post",
+      data: {
+        readingProfiles: readingProfiles,
+      },
+      success(data) {
+        $("#responseUserProfiles").html(data);
+      },
+      error() {
+        $("#responseUserProfiles").html("Something Went Wrong");
+      },
+    });
+  };
+
+  readingUserProfiles();
+
+  // // ######### INSERTING POST
+
   $("#commentForm").on("submit", function (e) {
     e.preventDefault();
     let comment = $("#comment").val();
@@ -33,7 +58,6 @@ $(document).ready(function () {
       return false;
     }
 
-    // ######### INSERTING POST
     $.ajax({
       url: "ajaxHandlerPHP/ajaxIndex.php",
       type: "post",
