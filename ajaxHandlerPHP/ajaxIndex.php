@@ -56,10 +56,10 @@ if (isset($_POST["readingPostData"])) {
 
             $profileImage = "";
 
-            if ($row['profileImage'] !== "") {
-                $profileImage = '<img src = "profileImage/' . $row['profileImage'] . '" class="img-fluid img-thumbnail"/>';
-            } else {
+            if ($row['profileImage'] == "") {
                 $profileImage = '<img src = "profileImage/defaultUser.png" class="img-fluid img-thumbnail"/>';
+            } else {
+                $profileImage = '<img src = "profileImage/' . $row['profileImage'] . '" class="img-fluid img-thumbnail"/>';
             }
 
             $data = '<div class= "jumbotron" style = "padding: 24px 30px 24px 30px" >
@@ -113,17 +113,16 @@ if (isset($_POST["readingProfiles"])) {
 
             }
 
-            $data1 = '<div class="row">
+            $data1 = '<b class="text-center"><h5>@' . $row["username"] . '</h5> </b> <div class="row">
             ' . $profileImage . '
                   <div class="col-5">
-                <button class="btn btn-small btn-primary"><i class="fa fa-plus" aria-hidden="true"></i>
-                  Follow</button>
+                  ' . make_follow_button($conn, $row['user_id'], $userId) . '
                   </div>
 
               <div class="col-3  px-0">
                 <p class="bg-success text-white py-1 pt-1">' . $row['followers'] . ' Followers</p>
               </div>
-            </div>
+
             </div>';
 
             echo $data1;
@@ -132,4 +131,89 @@ if (isset($_POST["readingProfiles"])) {
     } else {
         echo '<p>NO USERS AVAILABLE </p>';
     }
+}
+
+// ############################################ FOLLOW USER
+
+if (isset($_POST["follow"])) {
+
+    //Query
+    $sql = "INSERT INTO follow_information (following_id, followers_id) VALUES (:followingId, :userId)";
+
+    //Preparing Query
+    $result = $conn->prepare($sql);
+
+    //Binding Values
+    $result->bindValue(":followingId", $followingId);
+    $result->bindValue(":userId", $userId);
+
+    //Executing Query
+    $result->execute();
+
+    if ($result) {
+
+        $sql = "UPDATE user_information SET followers = followers + 1 WHERE user_id = $followingId";
+        $result = $conn->prepare($sql);
+        $result->execute();
+
+    } else {
+        echo "Something Went Wrong";
+    }
+}
+
+// ################################################## UNFOLLOW USER
+
+if (isset($_POST["unfollow"])) {
+
+    //Query
+    $sql = "DELETE FROM follow_information WHERE following_id = :followingId AND followers_id = :userId";
+
+    //Preparing Query
+    $result = $conn->prepare($sql);
+
+    //Binding Values
+    $result->bindValue(":followingId", $followingId);
+    $result->bindValue(":userId", $userId);
+
+    //Executing Query
+    $result->execute();
+
+    if ($result) {
+
+        $sql = "UPDATE user_information SET followers = followers - 1 WHERE user_id = $followingId";
+        $result = $conn->prepare($sql);
+        $result->execute();
+
+    } else {
+        echo "Something Went Wrong";
+    }
+}
+
+// ##################################################### FOLLOW UNFOLLOW BUTTON
+
+// Followers Id means User that is login that users id
+// Following Id means that Users Id which We Want to Follow
+
+function make_follow_button($conn, $following_id, $followers_id)
+{
+
+    $sql = "SELECT * FROM follow_information WHERE following_id = :following_id AND followers_id = :followers_id";
+
+    $result = $conn->prepare($sql);
+
+    $result->bindValue(":following_id", $following_id);
+    $result->bindValue(":followers_id", $followers_id);
+
+    $result->execute();
+
+    if ($result->rowCount() > 0) {
+        $output = '<button class="btn btn-small btn-primary" id="followingAction" onclick= unfollowUser(' . $following_id . ') >
+            Following</button>';
+    } else {
+        $output = '<button class="btn btn-small btn-primary" id="followAction" onclick= followUser(' . $following_id . ') >
+     <i class="fa fa-plus" aria-hidden="true"></i>
+            Follow</button>';
+    }
+
+    return $output;
 }

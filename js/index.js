@@ -76,3 +76,57 @@ $(document).ready(function () {
     });
   });
 });
+
+const followUser = (id) => {
+  let followingId = id;
+  let follow = "follow";
+
+  $.ajax({
+    url: "ajaxHandlerPHP/ajaxIndex.php",
+    type: "post",
+    data: {
+      followingId: followingId,
+      follow: follow,
+    },
+    success(data) {
+      $("#responseFollow").html(data);
+      readingUserProfiles();
+    },
+    error() {
+      $("#responseFollow").html("Something Went Wrong");
+    },
+  });
+};
+
+const unfollowUser = (id) => {
+  let followingId = id;
+  let unfollow = "unfollow";
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to Unfollow this User?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Unfollow",
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: "ajaxHandlerPHP/ajaxIndex.php",
+        type: "post",
+        data: {
+          followingId: followingId,
+          unfollow: unfollow,
+        },
+        success(data) {
+          $("#responseUnfollow").html(data);
+          readingUserProfiles();
+        },
+        error() {
+          $("#responseUnfollow").html("Something Went Wrong");
+        },
+      });
+    }
+  });
+};

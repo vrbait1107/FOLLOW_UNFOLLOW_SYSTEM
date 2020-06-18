@@ -60,6 +60,9 @@ if (!isset($_SESSION['user'])) {
 
       <section class="col-md-4">
 
+        <div id="responseFollow"></div>
+        <div id="responseUnfollow"></div>
+
         <div class="card">
           <div class="card-header">Users List</div>
           <div class="card-body">
