@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2020 at 06:19 AM
+-- Generation Time: Jun 18, 2020 at 10:25 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -25,6 +25,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `follow_information`
+--
+
+CREATE TABLE `follow_information` (
+  `follow_id` int(5) NOT NULL,
+  `followers_id` int(5) DEFAULT NULL,
+  `following_id` int(5) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `follow_information`
+--
+
+INSERT INTO `follow_information` (`follow_id`, `followers_id`, `following_id`) VALUES
+(7, 3, 2);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `post_information`
 --
 
@@ -42,7 +61,8 @@ CREATE TABLE `post_information` (
 INSERT INTO `post_information` (`post_id`, `user_id`, `postContent`, `postDate`) VALUES
 (1, 2, 'hbhghgh', '2020-06-16 09:22:31.486945'),
 (2, 2, 'Hiii Iam Vishal', '2020-06-16 09:22:52.013822'),
-(3, 2, 'Hii I am  Vishal Rambhau Bait from Gharda Institue of Technology', '2020-06-16 09:31:27.996150');
+(3, 2, 'Hii I am  Vishal Rambhau Bait from Gharda Institue of Technology', '2020-06-16 09:31:27.996150'),
+(4, 3, 'I am John Cena', '2020-06-18 08:08:36.996988');
 
 -- --------------------------------------------------------
 
@@ -66,12 +86,18 @@ CREATE TABLE `user_information` (
 --
 
 INSERT INTO `user_information` (`user_id`, `username`, `email`, `password`, `name`, `profileImage`, `bio`, `followers`) VALUES
-(2, 'Vishal1107', 'vishalbait01@gmail.com', '$2y$10$KP6ooWacsjSXLgyQbyrJeO2zt/xIWrcLwin17WurrV453uXIngIJq', 'Vishal Bait', 'developer1.jpg', 'Full Stack Developer', 0),
+(2, 'Vishal1107', 'vishalbait01@gmail.com', '$2y$10$KP6ooWacsjSXLgyQbyrJeO2zt/xIWrcLwin17WurrV453uXIngIJq', 'Vishal Bait', 'developer1.jpg', 'Full Stack Developer', 2),
 (3, 'John Cena', 'johncena@gmail.com', '$2y$10$ngHKRHdwHkKpYcgP9DPt9uC2s7M3eSQ3MRVpWa9bCutogFzbfnUKi', '', NULL, NULL, 0);
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `follow_information`
+--
+ALTER TABLE `follow_information`
+  ADD PRIMARY KEY (`follow_id`);
 
 --
 -- Indexes for table `post_information`
@@ -92,10 +118,16 @@ ALTER TABLE `user_information`
 --
 
 --
+-- AUTO_INCREMENT for table `follow_information`
+--
+ALTER TABLE `follow_information`
+  MODIFY `follow_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `post_information`
 --
 ALTER TABLE `post_information`
-  MODIFY `post_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `post_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_information`
