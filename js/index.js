@@ -91,6 +91,7 @@ const followUser = (id) => {
     success(data) {
       $("#responseFollow").html(data);
       readingUserProfiles();
+      readingPost();
     },
     error() {
       $("#responseFollow").html("Something Went Wrong");
@@ -122,6 +123,7 @@ const unfollowUser = (id) => {
         success(data) {
           $("#responseUnfollow").html(data);
           readingUserProfiles();
+          readingPost();
         },
         error() {
           $("#responseUnfollow").html("Something Went Wrong");

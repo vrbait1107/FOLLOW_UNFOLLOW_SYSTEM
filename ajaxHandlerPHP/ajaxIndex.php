@@ -43,11 +43,16 @@ if (isset($_POST['insert'])) {
 
 if (isset($_POST["readingPostData"])) {
 
-    $sql = "SELECT * FROM user_information INNER JOIN post_information
-     ON user_information.user_id = post_information.user_id GROUP BY post_information.post_id
-      ORDER BY post_information.post_id DESC";
+    $sql = "SELECT * FROM post_information INNER JOIN user_information ON
+    post_information.user_id = user_information.user_id LEFT JOIN follow_information ON
+    follow_information.following_id = post_information.user_id WHERE
+    post_information.user_id = :userId OR follow_information.followers_id = :userId2
+    GROUP BY post_information.post_id
+    ORDER BY post_information.post_id DESC";
 
     $result = $conn->prepare($sql);
+    $result->bindValue(":userId", $userId);
+    $result->bindValue(":userId2", $userId);
     $result->execute();
 
     if ($result->rowCount() > 0) {
