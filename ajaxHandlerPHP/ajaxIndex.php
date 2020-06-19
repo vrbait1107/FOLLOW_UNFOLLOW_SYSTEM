@@ -13,26 +13,26 @@ extract($_POST);
 
 if (isset($_POST['insert'])) {
 
-    $sql = "INSERT INTO post_information (user_id, postContent) VALUES (:userId, :comment)";
+    $sql = "INSERT INTO post_information (user_id, postContent) VALUES (:userId, :post)";
 
     $result = $conn->prepare($sql);
     $result->bindValue(":userId", $userId);
-    $result->bindValue(":comment", $comment);
+    $result->bindValue(":post", $post);
 
     $result->execute();
 
     if ($result) {
         echo "<script>Swal.fire({
-              icon: 'success',
-              title: 'Success',
-              text: 'Your Post Successfully Shared'
+                icon: 'success',
+                title: 'Success',
+                text: 'Your Post Successfully Shared'
             })</script>";
 
     } else {
         echo "<script>Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'We failed to share your post'
+                icon: 'error',
+                title: 'Error',
+                text: 'We failed to share your post'
             })</script>";
 
     }
@@ -69,15 +69,27 @@ if (isset($_POST["readingPostData"])) {
 
             $data = '<div class= "jumbotron" style = "padding: 24px 30px 24px 30px" >
             <div class="row">
+
             <div class="col-md-2 col-4">
               ' . $profileImage . '
             </div>
 
             <div class="col-md-10 col-8">
             <h3><b>@ ' . $row['username'] . '</b></h3>
-            <p>' . $row['postContent'] . ' </p>
+            <p class="mt-2">' . $row['postContent'] . ' </p>
+            <p class="float-right" id="toggleButton">Comment</p>
+
+            <form name="commentForm" id="commentForm" >
+            <textarea name="comments" id="comments" class="form-control"
+            cols="30" rows="2"></textarea>
+            <input type="hidden" name="hiddenPostId" id="hiddenPostId" value= ' . $row["post_id"] . '>
+            <button type="button" id="insertComment" class="btn btn-primary btn-small mt-2 float-right">Submit</button>
+             </form>
+
             </div>
-           </div>
+
+
+            </div>
             </div>';
 
             echo $data;

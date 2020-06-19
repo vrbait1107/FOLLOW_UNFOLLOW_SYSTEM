@@ -46,14 +46,14 @@ $(document).ready(function () {
 
   readingUserProfiles();
 
-  // // ######### INSERTING POST
+  // // ################ INSERTING POST
 
-  $("#commentForm").on("submit", function (e) {
+  $("#postForm").on("submit", function (e) {
     e.preventDefault();
-    let comment = $("#comment").val();
+    let post = $("#post").val();
     let insert = "insert";
 
-    if (comment === "") {
+    if (post === "") {
       alert("Story Cannot be Empty");
       return false;
     }
@@ -62,12 +62,12 @@ $(document).ready(function () {
       url: "ajaxHandlerPHP/ajaxIndex.php",
       type: "post",
       data: {
-        comment: comment,
+        post: post,
         insert: insert,
       },
       success(data) {
         $("#responseMessage").html(data);
-        $("#commentForm").trigger("reset");
+        $("#postForm").trigger("reset");
         readingPost();
       },
       error() {

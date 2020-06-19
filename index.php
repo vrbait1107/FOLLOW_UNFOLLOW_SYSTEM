@@ -29,13 +29,13 @@ if (!isset($_SESSION['user'])) {
     <div class="row">
       <section class="col-md-8">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header" >
             Start Write Here
           </div>
           <div class="card-body">
-            <form action="" method="post" id="commentForm" name="commentForm">
+            <form action="" method="post" id="postForm" name="postForm" >
               <div class="form-group">
-                <textarea name="comment" id="comment" cols="30" rows="3" class="form-control"
+                <textarea name="post" id="post" cols="30" rows="3" class="form-control"
                   placeholder="Write your story"></textarea>
               </div>
               <!-- Response Message -->
@@ -66,9 +66,9 @@ if (!isset($_SESSION['user'])) {
         <div class="card">
           <div class="card-header">Users List</div>
           <div class="card-body">
-          <!-- Users Profile -->
+            <!-- Users Profile -->
             <div id="responseUserProfiles"></div>
-        </div>
+          </div>
 
       </section>
     </div>
@@ -78,7 +78,6 @@ if (!isset($_SESSION['user'])) {
   <?php include_once "includes/footerScripts.php";?>
   <!-- Local JS -->
   <script src="js/index.js"></script>
-
 
 </body>
 

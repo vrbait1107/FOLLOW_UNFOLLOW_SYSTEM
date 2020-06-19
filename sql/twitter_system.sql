@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 18, 2020 at 10:25 AM
+-- Generation Time: Jun 19, 2020 at 08:45 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.2.12
 
@@ -39,7 +39,12 @@ CREATE TABLE `follow_information` (
 --
 
 INSERT INTO `follow_information` (`follow_id`, `followers_id`, `following_id`) VALUES
-(7, 3, 2);
+(7, 3, 2),
+(10, 2, 3),
+(11, 4, 3),
+(13, 4, 2),
+(14, 2, 4),
+(15, 3, 4);
 
 -- --------------------------------------------------------
 
@@ -59,10 +64,9 @@ CREATE TABLE `post_information` (
 --
 
 INSERT INTO `post_information` (`post_id`, `user_id`, `postContent`, `postDate`) VALUES
-(1, 2, 'hbhghgh', '2020-06-16 09:22:31.486945'),
-(2, 2, 'Hiii Iam Vishal', '2020-06-16 09:22:52.013822'),
-(3, 2, 'Hii I am  Vishal Rambhau Bait from Gharda Institue of Technology', '2020-06-16 09:31:27.996150'),
-(4, 3, 'I am John Cena', '2020-06-18 08:08:36.996988');
+(6, 4, 'Hii, I am Vikram', '2020-06-19 04:07:48.171776'),
+(7, 2, 'Hiii, I am Vishal', '2020-06-19 04:08:34.055839'),
+(8, 3, 'Hii, I am Saurabh', '2020-06-19 04:09:25.553648');
 
 -- --------------------------------------------------------
 
@@ -78,7 +82,7 @@ CREATE TABLE `user_information` (
   `name` varchar(50) NOT NULL,
   `profileImage` varchar(100) DEFAULT NULL,
   `bio` varchar(255) DEFAULT NULL,
-  `followers` int(11) DEFAULT NULL
+  `followers` int(10) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -87,7 +91,8 @@ CREATE TABLE `user_information` (
 
 INSERT INTO `user_information` (`user_id`, `username`, `email`, `password`, `name`, `profileImage`, `bio`, `followers`) VALUES
 (2, 'Vishal1107', 'vishalbait01@gmail.com', '$2y$10$KP6ooWacsjSXLgyQbyrJeO2zt/xIWrcLwin17WurrV453uXIngIJq', 'Vishal Bait', 'developer1.jpg', 'Full Stack Developer', 2),
-(3, 'John Cena', 'johncena@gmail.com', '$2y$10$ngHKRHdwHkKpYcgP9DPt9uC2s7M3eSQ3MRVpWa9bCutogFzbfnUKi', '', NULL, NULL, 0);
+(3, 'Saurabh01', 'saurabh01@gmail.com', '$2y$10$ngHKRHdwHkKpYcgP9DPt9uC2s7M3eSQ3MRVpWa9bCutogFzbfnUKi', '', NULL, NULL, 2),
+(4, 'Vikram01', 'vikram01@gmail.com', '$2y$10$XeEIjsvGoa7pNG.wrKJhOed9gvxr4pH6EzN9azANgNuDKTmYz7kGu', '', NULL, NULL, 2);
 
 --
 -- Indexes for dumped tables
@@ -121,19 +126,19 @@ ALTER TABLE `user_information`
 -- AUTO_INCREMENT for table `follow_information`
 --
 ALTER TABLE `follow_information`
-  MODIFY `follow_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `follow_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `post_information`
 --
 ALTER TABLE `post_information`
-  MODIFY `post_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `post_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user_information`
 --
 ALTER TABLE `user_information`
-  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- Constraints for dumped tables
