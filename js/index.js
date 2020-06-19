@@ -46,7 +46,7 @@ $(document).ready(function () {
 
   readingUserProfiles();
 
-  // // ################ INSERTING POST
+  // // ####################################### INSERTING POST
 
   $("#postForm").on("submit", function (e) {
     e.preventDefault();
@@ -77,6 +77,8 @@ $(document).ready(function () {
   });
 });
 
+//################################## FOLLOW USER AJAX REQUEST
+
 const followUser = (id) => {
   let followingId = id;
   let follow = "follow";
@@ -99,6 +101,7 @@ const followUser = (id) => {
   });
 };
 
+//################################## UNFOLLOW USER AJAX REQUEST
 const unfollowUser = (id) => {
   let followingId = id;
   let unfollow = "unfollow";
@@ -132,3 +135,8 @@ const unfollowUser = (id) => {
     }
   });
 };
+var post_id;
+$(document).on("click", ".toggleButton", function () {
+  post_id = $(this).attr("id");
+  $("#commentForm" + post_id).toggle();
+});

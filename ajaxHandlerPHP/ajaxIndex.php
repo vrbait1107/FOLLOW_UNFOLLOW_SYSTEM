@@ -77,9 +77,10 @@ if (isset($_POST["readingPostData"])) {
             <div class="col-md-10 col-8">
             <h3><b>@ ' . $row['username'] . '</b></h3>
             <p class="mt-2">' . $row['postContent'] . ' </p>
-            <p class="float-right" id="toggleButton">Comment</p>
 
-            <form name="commentForm" id="commentForm" >
+            <p class="float-right btn btn-link toggleButton" id="' . $row["post_id"] . '">Comment</p>
+
+            <form name="commentForm" id="commentForm' . $row["post_id"] . '" >
             <textarea name="comments" id="comments" class="form-control"
             cols="30" rows="2"></textarea>
             <input type="hidden" name="hiddenPostId" id="hiddenPostId" value= ' . $row["post_id"] . '>
