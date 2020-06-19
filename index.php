@@ -36,11 +36,11 @@ if (!isset($_SESSION['user'])) {
             <form action="" method="post" id="postForm" name="postForm" >
               <div class="form-group">
                 <textarea name="post" id="post" cols="30" rows="3" class="form-control"
-                  placeholder="Write your story"></textarea>
+                  placeholder="What's happening"></textarea>
               </div>
               <!-- Response Message -->
               <div id="responseMessage"></div>
-              <Button type="submit" class="btn btn-primary float-right">Share</Button>
+              <Button type="submit" class="btn btn-primary float-right">Tweet</Button>
             </form>
           </div>
         </div>
@@ -64,7 +64,7 @@ if (!isset($_SESSION['user'])) {
         <div id="responseUnfollow"></div>
 
         <div class="card">
-          <div class="card-header">Users List</div>
+          <div class="card-header">Who to Follow</div>
           <div class="card-body">
             <!-- Users Profile -->
             <div id="responseUserProfiles"></div>

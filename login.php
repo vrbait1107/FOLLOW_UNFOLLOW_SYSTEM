@@ -29,21 +29,38 @@ if (isset($_POST["login"])) {
 
     $sql = "SELECT * FROM user_information WHERE username= :username OR email =:email";
     $result = $conn->prepare($sql);
+
     $result->bindValue(":username", $username);
     $result->bindValue(":email", $username);
+
     $result->execute();
 
     $row = $result->fetch(PDO::FETCH_ASSOC);
+    $activeStatus = $row['status'];
     $dbPassword = $row['password'];
     $userEmail = $row['email'];
     $userId = $row['user_id'];
+    $username = $row['username'];
 
     if (password_verify($password, $dbPassword)) {
 
-        $_SESSION['user'] = $userEmail;
-        $_SESSION['userId'] = $userId;
+        if ($activeStatus == "active") {
 
-        header("Location:index.php");
+            $_SESSION['user'] = $userEmail;
+            $_SESSION['userId'] = $userId;
+            $_SESSION['username'] = $username;
+
+            // Redirecting to Index Page
+            header("Location:index.php");
+
+        } else {
+            echo "<script>Swal.fire({
+              icon: 'warning',
+              title: 'Activate Your Account',
+              text: 'Please activate your Account'
+            })</script>";
+
+        }
 
     } else {
         echo "<script>Swal.fire({
@@ -67,6 +84,7 @@ if (isset($_POST["login"])) {
           <h3 class="breadcrumb font-time mb-3 text-uppercase">Login here</h3>
 
           <form action="" method="post" onsubmit = "return loginValidation()">
+
             <div class="form-group">
               <label for="username">Username/ Email</label>
               <input type="text" name="username" id="username" class="form-control" placeholder="Enter Username/Email">
@@ -78,7 +96,9 @@ if (isset($_POST["login"])) {
                 placeholder="Enter Your Password">
             </div>
 
-            <input type="submit" value="Login" name="login" id= "login" class="btn btn-primary btn-block rounded-pill">
+            <a href="forgotPassword.php" class="text-danger font-sans">Forgot Password?</a>
+
+            <input type="submit" value="Login" name="login" id= "login" class="btn mt-3 btn-primary btn-block rounded-pill">
           </form>
 
           <p class="my-2 font-sans">Not have an account? <a href="register.php">Create Account here</a></p>
