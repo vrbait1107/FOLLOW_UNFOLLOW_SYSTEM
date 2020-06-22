@@ -80,7 +80,7 @@ if (isset($_POST["readingPostData"])) {
 
             <p class="float-right btn btn-link toggleButton" id="' . $row["post_id"] . '">Comment</p>
 
-            <form name="commentForm" id="commentForm' . $row["post_id"] . '" >
+            <form name="commentForm" style="display:none" id="commentForm' . $row["post_id"] . '" >
             <textarea name="comments" id="comments" class="form-control"
             cols="30" rows="2"></textarea>
             <input type="hidden" name="hiddenPostId" id="hiddenPostId" value= ' . $row["post_id"] . '>
