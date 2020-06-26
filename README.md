@@ -11,7 +11,7 @@
 
 ## Technology Used for this project
 
-## Front-End
+### Front-End
 
 1. Markup Language : HTML
 2. Stylesheet Language: CSS
@@ -21,15 +21,15 @@
 6. CSS Framework: Bootstrap
 7. Other: Ajax
 
-## BACK-END
+### BACK-END
 
 1. Language: PHP
 2. PHP Libraries: PHP Mailer
 
-## DATABASE
+### DATABASE
 
 - MYSQL
 
-## VERSION CONTROL
+### VERSION CONTROL
 
 1. Software: GIT
