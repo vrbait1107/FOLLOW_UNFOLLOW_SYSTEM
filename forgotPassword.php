@@ -20,8 +20,6 @@ require_once "config.php";
 
 <body>
 
-    <!-- Navbar PHP -->
-    <?php include_once "includes/navbarUser.php";?>
 
 
     <main class="container">
