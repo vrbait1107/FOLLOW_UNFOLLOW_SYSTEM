@@ -140,3 +140,28 @@ $(document).on("click", ".toggleButton", function () {
   post_id = $(this).attr("id");
   $("#commentForm" + post_id).toggle();
 });
+
+$(document).on("click", ".insertComment", function () {
+  let comment = $("#comments" + post_id).val();
+
+  if (comment === "") {
+    alert("Comment Cannot be Empty");
+    return false;
+  }
+
+  $.ajax({
+    action: "ajaxHandlerPHP/ajaxIndex.php",
+    type: "post",
+    data: {
+      submitComment: "submitComment",
+      comment: comment,
+      postId: post_id,
+    },
+    success(data) {
+      $("#responseComment").html(data);
+    },
+    error(err) {
+      $("#responseComment").html(err);
+    },
+  });
+});

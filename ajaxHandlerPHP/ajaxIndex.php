@@ -9,7 +9,7 @@ $userId = $_SESSION['userId'];
 
 extract($_POST);
 
-//####################### INSERTING POST
+//----------------------------------------> INSERTING POST
 
 if (isset($_POST['insert'])) {
 
@@ -39,7 +39,7 @@ if (isset($_POST['insert'])) {
 
 }
 
-//##################### DISPLAYING POST
+//----------------------------------------> DISPLAYING POST
 
 if (isset($_POST["readingPostData"])) {
 
@@ -81,10 +81,11 @@ if (isset($_POST["readingPostData"])) {
             <p class="float-right btn btn-link toggleButton" id="' . $row["post_id"] . '">Comment</p>
 
             <form name="commentForm" style="display:none" id="commentForm' . $row["post_id"] . '" >
-            <textarea name="comments" id="comments" class="form-control"
+
+            <textarea name="comments" id="comments' . $row["post_id"] . '" class="form-control"
             cols="30" rows="2"></textarea>
-            <input type="hidden" name="hiddenPostId" id="hiddenPostId" value= ' . $row["post_id"] . '>
-            <button type="button" id="insertComment" class="btn btn-primary btn-small mt-2 float-right">Submit</button>
+
+            <button type="button" id="insertComment" class="btn btn-primary btn-small mt-2 insertComment  float-right">Submit</button>
              </form>
 
             </div>
@@ -102,7 +103,7 @@ if (isset($_POST["readingPostData"])) {
 
 }
 
-// #################### DISPLAYING USER PROFILES
+// ---------------------------------------->DISPLAYING USER PROFILES
 
 if (isset($_POST["readingProfiles"])) {
 
@@ -151,7 +152,7 @@ if (isset($_POST["readingProfiles"])) {
     }
 }
 
-// ############################################ FOLLOW USER
+// ----------------------------------------> FOLLOW USER
 
 if (isset($_POST["follow"])) {
 
@@ -179,7 +180,7 @@ if (isset($_POST["follow"])) {
     }
 }
 
-// ################################################## UNFOLLOW USER
+// ----------------------------------------> UNFOLLOW USER
 
 if (isset($_POST["unfollow"])) {
 
@@ -207,7 +208,7 @@ if (isset($_POST["unfollow"])) {
     }
 }
 
-// ##################################################### FOLLOW UNFOLLOW BUTTON
+// ----------------------------------------> FOLLOW UNFOLLOW BUTTON
 
 // Followers Id means User that is login that users id
 // Following Id means that Users Id which We Want to Follow
@@ -234,4 +235,37 @@ function make_follow_button($conn, $following_id, $followers_id)
     }
 
     return $output;
+}
+
+//--------------------------------> INSRTING COMMENT
+
+if (isset($_POST["submitComment"])) {
+
+    $sql = "INSERT INTO comment_information (user_id, post_id, comment) VALUES (:userId, :postId, :comment)";
+
+    // Prepare Query
+    $result = $conn->prepare($sql);
+
+    //Binding Values
+    $result->bindValue(":user_id", $userId);
+    $result->bindValue(":postId", $postId);
+    $result->bindValue(":comment", $comment);
+
+    //Executing Query
+    $result->execute();
+
+    if ($result) {
+        echo "<script>Swal.fire({
+                icon: 'success',
+                title: 'Successful',
+                text: 'Comment Sucessful'
+            })</script>";
+
+    } else {
+        echo "<script>Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Somethong Went Wrong'
+            })</script>";
+    }
 }

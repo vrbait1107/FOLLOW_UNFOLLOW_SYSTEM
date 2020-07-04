@@ -54,6 +54,7 @@ if (!isset($_SESSION['user'])) {
           <div class="card-body">
             <!-- Response Data -->
             <div id="responsePostData"></div>
+            <div id="responseComment"></div>
           </div>
         </div>
       </section>
