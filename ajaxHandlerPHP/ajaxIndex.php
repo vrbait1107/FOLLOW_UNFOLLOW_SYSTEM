@@ -59,6 +59,12 @@ if (isset($_POST["readingPostData"])) {
 
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
+            $repost = "button";
+
+            if ($row['user_id'] === $userId) {
+                $repost = "disabled";
+            }
+
             $profileImage = "";
 
             if ($row['profileImage'] == "") {
@@ -79,7 +85,11 @@ if (isset($_POST["readingPostData"])) {
 
             <div class="mt-2">
             <span>' . $row['postContent'] . ' </span>
-            <span class="float-right btn btn-link toggleButton" id="' . $row["post_id"] . '">
+
+            <span><button ' . $repost . '   class= "btn btn-danger float-right repostButton"
+            data-post_id= ' . $row["post_id"] . '><i class="fa fa-retweet"></i></button></span>
+
+             <span class="float-right btn btn-link toggleButton" id="' . $row["post_id"] . '">
             ' . commentCount($conn, $row["post_id"]) . ' Comment</span>
             </div>
 
@@ -91,7 +101,7 @@ if (isset($_POST["readingPostData"])) {
             <textarea name="comments" id="comments' . $row["post_id"] . '" class="form-control"
             cols="30" rows="2"></textarea>
 
-            <button type="button"  class="btn btn-primary btn-small mt-2 insertComment  float-right">Submit</button>
+            <button class="btn btn-primary btn-small mt-2 insertComment  float-right">Submit</button>
              </form>
 
             </div>
@@ -316,5 +326,77 @@ comment_information.user_id = user_information.user_id  WHERE
             </div>';
 
         echo $data;
+    }
+}
+
+//---------------------------------------->> RETWEET FUNCTIONALITY
+
+if (isset($_POST["retweet"])) {
+
+    $sql1 = "SELECT  * FROM repost_information WHERE post_id = :postId AND user_id = :userId";
+
+    $result1 = $conn->prepare($sql1);
+
+    $result1->bindValue(":postId", $postId);
+    $result1->bindValue(":userId", $userId);
+
+    $result1->execute();
+
+    if ($result1->rowCount() > 0) {
+        echo "<script>Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: 'Your already reposted this tweet'
+            })</script>";
+
+    } else {
+
+        $sql2 = "INSERT INTO repost_information (post_id, user_id) VALUES (:postId ,:userId)";
+
+        $result2 = $conn->prepare($sql2);
+
+        $result2->bindValue(":postId", $postId);
+        $result2->bindValue(":userId", $userId);
+
+        if ($result2->execute()) {
+
+            $sql3 = "SELECT * FROM post_information WHERE post_id = :postId";
+
+            $result3 = $conn->prepare($sql3);
+
+            $result3->bindValue(":postId", $postId);
+
+            $result3->execute();
+
+            $row = $result3->fetch(PDO::FETCH_ASSOC);
+
+            $postContent = $row['postContent'];
+
+            $sql4 = "INSERT INTO post_information (user_id, postContent) VALUES (:userId, :post)";
+
+            $result4 = $conn->prepare($sql4);
+            $result4->bindValue(":userId", $userId);
+            $result4->bindValue(":post", $postContent);
+
+            $result4->execute();
+
+            if ($result4) {
+                echo "<script>Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Post Successfully Reposted'
+            })</script>";
+
+            } else {
+                echo "<script>Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'We failed to repost the tweet'
+            })</script>";
+
+            }
+
+        }
+
     }
 }

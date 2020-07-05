@@ -160,7 +160,9 @@ $(document).on("click", ".toggleButton", function () {
 });
 
 //-------------------------------->Submit Comment on Post
-$(document).on("click", ".insertComment", function () {
+$(document).on("click", ".insertComment", function (e) {
+  e.preventDefault();
+
   let comment = $("#comments" + post_id).val();
 
   if (comment === "") {
@@ -183,6 +185,28 @@ $(document).on("click", ".insertComment", function () {
     },
     error() {
       $("#responseComment").html("Something Went Wrong");
+    },
+  });
+});
+
+//---------------------------------------> RETWEET FUNCTIONALITY
+$(document).on("click", ".repostButton", function () {
+  let postId = $(this).data("post_id");
+  let retweet = "retweet";
+
+  $.ajax({
+    url: "ajaxHandlerPHP/ajaxIndex.php",
+    type: "post",
+    data: {
+      postId: postId,
+      retweet: retweet,
+    },
+    success(data) {
+      $("#responseRetweet").html(data);
+      readingPost();
+    },
+    error(err) {
+      alert("Something Went Wrong");
     },
   });
 });

@@ -55,6 +55,7 @@ if (!isset($_SESSION['user'])) {
             <!-- Response Data -->
             <div id="responsePostData"></div>
             <div id="responseComment"></div>
+            <div id="responseRetweet"></div>
           </div>
         </div>
       </section>
