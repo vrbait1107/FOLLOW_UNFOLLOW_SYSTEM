@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.3
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 19, 2020 at 08:45 AM
--- Server version: 10.1.37-MariaDB
--- PHP Version: 7.2.12
+-- Generation Time: Jul 05, 2020 at 11:43 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,6 +21,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `twitter_system`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comment_information`
+--
+
+CREATE TABLE `comment_information` (
+  `comment_id` int(5) NOT NULL,
+  `user_id` int(5) DEFAULT NULL,
+  `post_id` int(5) DEFAULT NULL,
+  `comment` varchar(255) DEFAULT NULL,
+  `commentTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `comment_information`
+--
+
+INSERT INTO `comment_information` (`comment_id`, `user_id`, `post_id`, `comment`, `commentTime`) VALUES
+(12, 2, 6, 'Hii vikram', '2020-07-05 09:34:40');
 
 -- --------------------------------------------------------
 
@@ -82,21 +103,32 @@ CREATE TABLE `user_information` (
   `name` varchar(50) NOT NULL,
   `profileImage` varchar(100) DEFAULT NULL,
   `bio` varchar(255) DEFAULT NULL,
-  `followers` int(10) NOT NULL DEFAULT '0'
+  `followers` int(10) NOT NULL DEFAULT '0',
+  `token` varchar(100) DEFAULT NULL,
+  `status` varchar(30) DEFAULT 'disable'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user_information`
 --
 
-INSERT INTO `user_information` (`user_id`, `username`, `email`, `password`, `name`, `profileImage`, `bio`, `followers`) VALUES
-(2, 'Vishal1107', 'vishalbait01@gmail.com', '$2y$10$KP6ooWacsjSXLgyQbyrJeO2zt/xIWrcLwin17WurrV453uXIngIJq', 'Vishal Bait', 'developer1.jpg', 'Full Stack Developer', 2),
-(3, 'Saurabh01', 'saurabh01@gmail.com', '$2y$10$ngHKRHdwHkKpYcgP9DPt9uC2s7M3eSQ3MRVpWa9bCutogFzbfnUKi', '', NULL, NULL, 2),
-(4, 'Vikram01', 'vikram01@gmail.com', '$2y$10$XeEIjsvGoa7pNG.wrKJhOed9gvxr4pH6EzN9azANgNuDKTmYz7kGu', '', NULL, NULL, 2);
+INSERT INTO `user_information` (`user_id`, `username`, `email`, `password`, `name`, `profileImage`, `bio`, `followers`, `token`, `status`) VALUES
+(2, 'Vishal1107', 'vishalbait01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', 'Vishal Bait', 'developer1.jpg', 'Full Stack Developer', 2, '0bf64bc982849a423a82863a571d76', 'active'),
+(3, 'Saurabh01', 'saurabh01@gmail.com', '$2y$10$ngHKRHdwHkKpYcgP9DPt9uC2s7M3eSQ3MRVpWa9bCutogFzbfnUKi', '', NULL, NULL, 2, NULL, 'active'),
+(4, 'Vikram01', 'vikram01@gmail.com', '$2y$10$XeEIjsvGoa7pNG.wrKJhOed9gvxr4pH6EzN9azANgNuDKTmYz7kGu', '', NULL, NULL, 2, NULL, 'active'),
+(6, 'Sudesh123', 'sudeshbait999@gmail.com', '$2y$10$FWNNLjdURx14ofjKuGbll.vsy1svg8Furmgm6vEdhUYBhGHxndzR6', '', NULL, NULL, 0, '17388c5e64261cc11190964da6f68d', 'active');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `comment_information`
+--
+ALTER TABLE `comment_information`
+  ADD PRIMARY KEY (`comment_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `post_id` (`post_id`);
 
 --
 -- Indexes for table `follow_information`
@@ -123,6 +155,12 @@ ALTER TABLE `user_information`
 --
 
 --
+-- AUTO_INCREMENT for table `comment_information`
+--
+ALTER TABLE `comment_information`
+  MODIFY `comment_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT for table `follow_information`
 --
 ALTER TABLE `follow_information`
@@ -138,11 +176,18 @@ ALTER TABLE `post_information`
 -- AUTO_INCREMENT for table `user_information`
 --
 ALTER TABLE `user_information`
-  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `comment_information`
+--
+ALTER TABLE `comment_information`
+  ADD CONSTRAINT `comment_information_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_information` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comment_information_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post_information` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `post_information`
