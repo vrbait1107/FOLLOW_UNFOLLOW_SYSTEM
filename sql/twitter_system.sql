@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2020 at 11:43 AM
+-- Generation Time: Jul 05, 2020 at 08:35 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -41,7 +41,11 @@ CREATE TABLE `comment_information` (
 --
 
 INSERT INTO `comment_information` (`comment_id`, `user_id`, `post_id`, `comment`, `commentTime`) VALUES
-(12, 2, 6, 'Hii vikram', '2020-07-05 09:34:40');
+(12, 2, 6, 'Hii vikram', '2020-07-05 09:34:40'),
+(13, 4, 7, 'Hiii, Vishal', '2020-07-05 14:21:26'),
+(14, 4, 8, 'Hii, Saurabh', '2020-07-05 14:21:41'),
+(15, 4, 6, 'Hii Vikram', '2020-07-05 14:24:13'),
+(16, 4, 8, 'How are You?', '2020-07-05 14:24:43');
 
 -- --------------------------------------------------------
 
@@ -87,7 +91,29 @@ CREATE TABLE `post_information` (
 INSERT INTO `post_information` (`post_id`, `user_id`, `postContent`, `postDate`) VALUES
 (6, 4, 'Hii, I am Vikram', '2020-06-19 04:07:48.171776'),
 (7, 2, 'Hiii, I am Vishal', '2020-06-19 04:08:34.055839'),
-(8, 3, 'Hii, I am Saurabh', '2020-06-19 04:09:25.553648');
+(8, 3, 'Hii, I am Saurabh', '2020-06-19 04:09:25.553648'),
+(10, 2, 'Hii, I am Vikram', '2020-07-05 18:04:04.720835'),
+(11, 2, 'Hii, I am Saurabh', '2020-07-05 18:04:25.360390');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `repost_information`
+--
+
+CREATE TABLE `repost_information` (
+  `repost_id` int(5) NOT NULL,
+  `user_id` int(5) NOT NULL,
+  `post_id` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `repost_information`
+--
+
+INSERT INTO `repost_information` (`repost_id`, `user_id`, `post_id`) VALUES
+(3, 2, 6),
+(4, 2, 8);
 
 -- --------------------------------------------------------
 
@@ -114,9 +140,9 @@ CREATE TABLE `user_information` (
 
 INSERT INTO `user_information` (`user_id`, `username`, `email`, `password`, `name`, `profileImage`, `bio`, `followers`, `token`, `status`) VALUES
 (2, 'Vishal1107', 'vishalbait01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', 'Vishal Bait', 'developer1.jpg', 'Full Stack Developer', 2, '0bf64bc982849a423a82863a571d76', 'active'),
-(3, 'Saurabh01', 'saurabh01@gmail.com', '$2y$10$ngHKRHdwHkKpYcgP9DPt9uC2s7M3eSQ3MRVpWa9bCutogFzbfnUKi', '', NULL, NULL, 2, NULL, 'active'),
-(4, 'Vikram01', 'vikram01@gmail.com', '$2y$10$XeEIjsvGoa7pNG.wrKJhOed9gvxr4pH6EzN9azANgNuDKTmYz7kGu', '', NULL, NULL, 2, NULL, 'active'),
-(6, 'Sudesh123', 'sudeshbait999@gmail.com', '$2y$10$FWNNLjdURx14ofjKuGbll.vsy1svg8Furmgm6vEdhUYBhGHxndzR6', '', NULL, NULL, 0, '17388c5e64261cc11190964da6f68d', 'active');
+(3, 'Saurabh01', 'saurabh01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 2, NULL, 'active'),
+(4, 'Vikram01', 'vikram01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 2, NULL, 'active'),
+(6, 'Sudesh01', 'sudeshbait999@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 0, '17388c5e64261cc11190964da6f68d', 'active');
 
 --
 -- Indexes for dumped tables
@@ -144,6 +170,14 @@ ALTER TABLE `post_information`
   ADD KEY `user_id` (`user_id`);
 
 --
+-- Indexes for table `repost_information`
+--
+ALTER TABLE `repost_information`
+  ADD PRIMARY KEY (`repost_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `post_id` (`post_id`);
+
+--
 -- Indexes for table `user_information`
 --
 ALTER TABLE `user_information`
@@ -158,7 +192,7 @@ ALTER TABLE `user_information`
 -- AUTO_INCREMENT for table `comment_information`
 --
 ALTER TABLE `comment_information`
-  MODIFY `comment_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `comment_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `follow_information`
@@ -170,7 +204,13 @@ ALTER TABLE `follow_information`
 -- AUTO_INCREMENT for table `post_information`
 --
 ALTER TABLE `post_information`
-  MODIFY `post_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `post_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `repost_information`
+--
+ALTER TABLE `repost_information`
+  MODIFY `repost_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `user_information`
@@ -194,6 +234,13 @@ ALTER TABLE `comment_information`
 --
 ALTER TABLE `post_information`
   ADD CONSTRAINT `post_information_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_information` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `repost_information`
+--
+ALTER TABLE `repost_information`
+  ADD CONSTRAINT `repost_information_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_information` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `repost_information_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post_information` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
