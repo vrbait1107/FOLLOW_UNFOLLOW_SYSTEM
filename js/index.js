@@ -2,7 +2,7 @@ let readingPost;
 let readingUserProfiles;
 
 $(document).ready(function () {
-  // ########### READING RECORD
+  // -------------------------------->READING RECORD
 
   readingPost = () => {
     readingPostData = "readingPostData";
@@ -24,7 +24,7 @@ $(document).ready(function () {
 
   readingPost();
 
-  // ############# DISPLAYING USER PROFILES
+  // --------------------------------> DISPLAYING USER PROFILES
 
   readingUserProfiles = () => {
     let readingProfiles = "readingProfiles";
@@ -46,7 +46,7 @@ $(document).ready(function () {
 
   readingUserProfiles();
 
-  // // ####################################### INSERTING POST
+  // // --------------------------------> INSERTING POST
 
   $("#postForm").on("submit", function (e) {
     e.preventDefault();
@@ -77,7 +77,7 @@ $(document).ready(function () {
   });
 });
 
-//################################## FOLLOW USER AJAX REQUEST
+//--------------------------------> FOLLOW USER AJAX REQUEST
 
 const followUser = (id) => {
   let followingId = id;
@@ -101,7 +101,7 @@ const followUser = (id) => {
   });
 };
 
-//################################## UNFOLLOW USER AJAX REQUEST
+//--------------------------------> UNFOLLOW USER AJAX REQUEST
 const unfollowUser = (id) => {
   let followingId = id;
   let unfollow = "unfollow";
@@ -135,12 +135,31 @@ const unfollowUser = (id) => {
     }
   });
 };
+
+//-------------------------------> Toggle Comment Link
 var post_id;
 $(document).on("click", ".toggleButton", function () {
   post_id = $(this).attr("id");
+
+  $.ajax({
+    url: "ajaxHandlerPHP/ajaxIndex.php",
+    type: "post",
+    data: {
+      fetchComment: "fetchComment",
+      postId: post_id,
+    },
+    success(data) {
+      $("#oldComments" + post_id).html(data);
+    },
+    error(err) {
+      alert(err);
+    },
+  });
+
   $("#commentForm" + post_id).toggle();
 });
 
+//-------------------------------->Submit Comment on Post
 $(document).on("click", ".insertComment", function () {
   let comment = $("#comments" + post_id).val();
 
@@ -150,7 +169,7 @@ $(document).on("click", ".insertComment", function () {
   }
 
   $.ajax({
-    action: "ajaxHandlerPHP/ajaxIndex.php",
+    url: "ajaxHandlerPHP/ajaxIndex.php",
     type: "post",
     data: {
       submitComment: "submitComment",
@@ -158,10 +177,12 @@ $(document).on("click", ".insertComment", function () {
       postId: post_id,
     },
     success(data) {
-      $("#responseComment").html(data);
+      $("#commentForm" + post_id).toggle();
+      $("#comments" + post_id).val("");
+      readingPost();
     },
-    error(err) {
-      $("#responseComment").html(err);
+    error() {
+      $("#responseComment").html("Something Went Wrong");
     },
   });
 });

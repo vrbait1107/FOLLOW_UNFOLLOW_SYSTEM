@@ -76,16 +76,22 @@ if (isset($_POST["readingPostData"])) {
 
             <div class="col-md-10 col-8">
             <h3><b>@ ' . $row['username'] . '</b></h3>
-            <p class="mt-2">' . $row['postContent'] . ' </p>
 
-            <p class="float-right btn btn-link toggleButton" id="' . $row["post_id"] . '">Comment</p>
+            <div class="mt-2">
+            <span>' . $row['postContent'] . ' </span>
+            <span class="float-right btn btn-link toggleButton" id="' . $row["post_id"] . '">
+            ' . commentCount($conn, $row["post_id"]) . ' Comment</span>
+            </div>
+
 
             <form name="commentForm" style="display:none" id="commentForm' . $row["post_id"] . '" >
+
+            <div id= "oldComments' . $row["post_id"] . '" class="mt-3"></div>
 
             <textarea name="comments" id="comments' . $row["post_id"] . '" class="form-control"
             cols="30" rows="2"></textarea>
 
-            <button type="button" id="insertComment" class="btn btn-primary btn-small mt-2 insertComment  float-right">Submit</button>
+            <button type="button"  class="btn btn-primary btn-small mt-2 insertComment  float-right">Submit</button>
              </form>
 
             </div>
@@ -208,6 +214,20 @@ if (isset($_POST["unfollow"])) {
     }
 }
 
+//-------------------------------------------> COUNT COMMENT
+
+function commentCount($conn, $post_id)
+{
+    $sql = "SELECT * FROM comment_information WHERE post_id = :postId";
+
+    $result = $conn->prepare($sql);
+    $result->bindValue(":postId", $post_id);
+    $result->execute();
+    $count = $result->rowCount();
+
+    return $count;
+}
+
 // ----------------------------------------> FOLLOW UNFOLLOW BUTTON
 
 // Followers Id means User that is login that users id
@@ -237,6 +257,8 @@ function make_follow_button($conn, $following_id, $followers_id)
     return $output;
 }
 
+extract($_POST);
+
 //--------------------------------> INSRTING COMMENT
 
 if (isset($_POST["submitComment"])) {
@@ -247,25 +269,52 @@ if (isset($_POST["submitComment"])) {
     $result = $conn->prepare($sql);
 
     //Binding Values
-    $result->bindValue(":user_id", $userId);
+    $result->bindValue(":userId", $userId);
     $result->bindValue(":postId", $postId);
     $result->bindValue(":comment", $comment);
 
     //Executing Query
     $result->execute();
 
-    if ($result) {
-        echo "<script>Swal.fire({
-                icon: 'success',
-                title: 'Successful',
-                text: 'Comment Sucessful'
-            })</script>";
+}
 
-    } else {
-        echo "<script>Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Somethong Went Wrong'
-            })</script>";
+//---------------------------------------> FETCHING OLD COMMENT TO RESPECTIVE POST
+
+if (isset($_POST['fetchComment'])) {
+    $sql = "SELECT * FROM comment_information INNER JOIN user_information ON
+comment_information.user_id = user_information.user_id  WHERE
+ post_id= :postId ORDER BY comment ASC";
+
+    $result = $conn->prepare($sql);
+    $result->bindValue(":postId", $postId);
+    $result->execute();
+
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+
+        $profileImage = "";
+
+        if ($row["profileImage"] == "") {
+
+            $profileImage = '<img src = "profileImage/defaultUser.png" class="img-fluid rounded-circle" alt="">';
+
+        } else {
+
+            $profileImage = '<img src = "profileImage/' . $row['profileImage'] . '" class="img-fluid rounded-circle" alt="">';
+
+        }
+
+        $data = '<div class="row">
+
+            <div class="col-md-2">
+              ' . $profileImage . '
+            </div>
+
+            <div class="col-md-10">
+            <h6><b>@ ' . $row['username'] . '</b></h6>
+            <p class="mt-2">' . $row['comment'] . ' </p>
+            </div>
+            </div>';
+
+        echo $data;
     }
 }
