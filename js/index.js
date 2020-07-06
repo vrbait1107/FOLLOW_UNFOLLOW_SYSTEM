@@ -102,6 +102,7 @@ const followUser = (id) => {
 };
 
 //--------------------------------> UNFOLLOW USER AJAX REQUEST
+
 const unfollowUser = (id) => {
   let followingId = id;
   let unfollow = "unfollow";
@@ -136,7 +137,8 @@ const unfollowUser = (id) => {
   });
 };
 
-//-------------------------------> Toggle Comment Link
+//-------------------------------> COMMENT TOGGLE
+
 var post_id;
 $(document).on("click", ".toggleButton", function () {
   post_id = $(this).attr("id");
@@ -159,7 +161,8 @@ $(document).on("click", ".toggleButton", function () {
   $("#commentForm" + post_id).toggle();
 });
 
-//-------------------------------->Submit Comment on Post
+//-------------------------------->COMMENT ON POST
+
 $(document).on("click", ".insertComment", function (e) {
   e.preventDefault();
 
@@ -190,6 +193,7 @@ $(document).on("click", ".insertComment", function (e) {
 });
 
 //---------------------------------------> RETWEET FUNCTIONALITY
+
 $(document).on("click", ".repostButton", function () {
   let postId = $(this).data("post_id");
   let retweet = "retweet";
@@ -203,6 +207,29 @@ $(document).on("click", ".repostButton", function () {
     },
     success(data) {
       $("#responseRetweet").html(data);
+      readingPost();
+    },
+    error(err) {
+      alert("Something Went Wrong");
+    },
+  });
+});
+
+// ----------------------------------------------------->> LIKE FUNCTIONALITY
+
+$(document).on("click", ".likeButton", function () {
+  let postId = $(this).data("like_id");
+  let likeButton = "like";
+
+  $.ajax({
+    url: "ajaxHandlerPHP/ajaxIndex.php",
+    type: "post",
+    data: {
+      postId: postId,
+      likeButton: likeButton,
+    },
+    success(data) {
+      $("#responseLike").html(data);
       readingPost();
     },
     error(err) {

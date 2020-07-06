@@ -85,12 +85,15 @@ if (isset($_POST["readingPostData"])) {
 
             <div class="mt-2">
             <span>' . $row['postContent'] . ' </span>
-
+            <hr/>
             <span><button ' . $repost . '   class= "btn btn-danger float-right repostButton"
-            data-post_id= ' . $row["post_id"] . '><i class="fa fa-retweet"></i></button></span>
+            data-post_id= ' . $row["post_id"] . '><i class="fa fa-retweet"></i> ' . countRetweet($conn, $row["post_id"]) . '</button></span>
 
-             <span class="float-right btn btn-link toggleButton" id="' . $row["post_id"] . '">
-            ' . commentCount($conn, $row["post_id"]) . ' Comment</span>
+             <span class="float-right btn btn btn-primary mx-2 toggleButton" id="' . $row["post_id"] . '">
+             <i class="fa fa-comments"></i> ' . commentCount($conn, $row["post_id"]) . '</span>
+
+             <span class="float-right btn btn-info mx-2 likeButton" data-like_id="' . $row["post_id"] . '">
+             <i class="fa fa-thumbs-up"></i> ' . likeCount($conn, $row["post_id"]) . '</span>
             </div>
 
 
@@ -168,7 +171,7 @@ if (isset($_POST["readingProfiles"])) {
     }
 }
 
-// ----------------------------------------> FOLLOW USER
+// ----------------------------------------> FOLLOW  USER FUNCTIONALITY
 
 if (isset($_POST["follow"])) {
 
@@ -196,7 +199,7 @@ if (isset($_POST["follow"])) {
     }
 }
 
-// ----------------------------------------> UNFOLLOW USER
+// ----------------------------------------> UNFOLLOW USER FUNCTINALITY
 
 if (isset($_POST["unfollow"])) {
 
@@ -233,6 +236,35 @@ function commentCount($conn, $post_id)
     $result = $conn->prepare($sql);
     $result->bindValue(":postId", $post_id);
     $result->execute();
+    $count = $result->rowCount();
+
+    return $count;
+}
+
+//----------------------------------------->> COUNT LIKES
+
+function likeCount($conn, $post_id)
+{
+    $sql = "SELECT * FROM like_information WHERE post_id = :postId";
+
+    $result = $conn->prepare($sql);
+    $result->bindValue(":postId", $post_id);
+    $result->execute();
+    $count = $result->rowCount();
+
+    return $count;
+}
+
+//------------------------------------------>> COUNT RETWEEET
+
+function countRetweet($conn, $postId)
+{
+    $sql = "SELECT * FROM repost_information WHERE post_id = :postId";
+
+    $result = $conn->prepare($sql);
+    $result->bindValue(":postId", $postId);
+    $result->execute();
+
     $count = $result->rowCount();
 
     return $count;
@@ -396,6 +428,53 @@ if (isset($_POST["retweet"])) {
 
             }
 
+        }
+
+    }
+}
+
+// ------------------------------------------>> LIKE FUNCTIONALITY
+
+if (isset($_POST["likeButton"])) {
+
+    $sqlLike = "SELECT * FROM like_information WHERE post_id = :postId AND user_id = :userId";
+
+    $resultLike = $conn->prepare($sqlLike);
+    $resultLike->bindValue(":postId", $postId);
+    $resultLike->bindValue(":userId", $userId);
+
+    $resultLike->execute();
+
+    if ($resultLike->rowCount() > 0) {
+
+        echo "<script>Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: 'You already liked this tweet'
+            })</script>";
+
+    } else {
+        $sqlLike1 = "INSERT INTO like_information (post_id, user_id) VALUES (:postId, :userId)";
+        $resultLike1 = $conn->prepare($sqlLike1);
+
+        $resultLike1->bindValue(":postId", $postId);
+        $resultLike1->bindValue(":userId", $userId);
+
+        $resultLike1->execute();
+
+        if ($resultLike1) {
+            echo "<script>Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'You liked tweet'
+            })</script>";
+
+        } else {
+            echo "<script>Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Failed to like tweet'
+            })</script>";
         }
 
     }

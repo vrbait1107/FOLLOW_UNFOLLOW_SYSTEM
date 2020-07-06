@@ -56,6 +56,7 @@ if (!isset($_SESSION['user'])) {
             <div id="responsePostData"></div>
             <div id="responseComment"></div>
             <div id="responseRetweet"></div>
+            <div id="responseLike"></div>
           </div>
         </div>
       </section>
@@ -68,7 +69,7 @@ if (!isset($_SESSION['user'])) {
         <div class="card">
           <div class="card-header">Who to Follow</div>
           <div class="card-body">
-            <!-- Users Profile -->
+            <!-- Users Profile Data-->
             <div id="responseUserProfiles"></div>
           </div>
 
