@@ -479,3 +479,21 @@ if (isset($_POST["likeButton"])) {
 
     }
 }
+
+//------------------------------------------->> TOOLTIP FOR LIKE FUNCTIONALITY
+
+if (isset($_POST["likedUsersList"])) {
+    $sql = "SELECT * FROM user_information INNER JOIN like_information
+     ON user_information.user_id = like_information.user_id WHERE post_id = :postId";
+
+    $result = $conn->prepare($sql);
+    $result->bindValue(":postId", $postId);
+    $result->execute();
+
+    while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
+
+        $output = '<span>' . $row['username'] . '  </span>';
+
+        echo $output;
+    }
+}

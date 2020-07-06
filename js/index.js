@@ -237,3 +237,36 @@ $(document).on("click", ".likeButton", function () {
     },
   });
 });
+
+//-------------------------------------------->> LIKE TOOLTIP FUNCTIONALITY
+
+$("body").tooltip({
+  selector: ".likeButton",
+  title: likeTooltip,
+  html: true,
+  placement: "right",
+});
+
+var tooltipData = "";
+
+function likeTooltip() {
+  let postId = $(this).data("like_id");
+  let likedUsersList = "likedUsersList";
+
+  $.ajax({
+    url: "ajaxHandlerPHP/ajaxIndex.php",
+    type: "post",
+    data: {
+      likedUsersList: likedUsersList,
+      postId: postId,
+    },
+    success(data) {
+      tooltipData = data;
+    },
+    error(err) {
+      alert("Something Went Wrong");
+    },
+  });
+
+  return tooltipData;
+}
