@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 05, 2020 at 08:35 PM
+-- Generation Time: Jul 06, 2020 at 08:29 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -70,6 +70,28 @@ INSERT INTO `follow_information` (`follow_id`, `followers_id`, `following_id`) V
 (13, 4, 2),
 (14, 2, 4),
 (15, 3, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `like_information`
+--
+
+CREATE TABLE `like_information` (
+  `like_id` int(5) NOT NULL,
+  `user_id` int(5) NOT NULL,
+  `post_id` int(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `like_information`
+--
+
+INSERT INTO `like_information` (`like_id`, `user_id`, `post_id`) VALUES
+(3, 2, 11),
+(4, 2, 10),
+(5, 2, 7),
+(6, 2, 8);
 
 -- --------------------------------------------------------
 
@@ -163,6 +185,14 @@ ALTER TABLE `follow_information`
   ADD PRIMARY KEY (`follow_id`);
 
 --
+-- Indexes for table `like_information`
+--
+ALTER TABLE `like_information`
+  ADD PRIMARY KEY (`like_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `post_id` (`post_id`);
+
+--
 -- Indexes for table `post_information`
 --
 ALTER TABLE `post_information`
@@ -201,6 +231,12 @@ ALTER TABLE `follow_information`
   MODIFY `follow_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT for table `like_information`
+--
+ALTER TABLE `like_information`
+  MODIFY `like_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `post_information`
 --
 ALTER TABLE `post_information`
@@ -228,6 +264,13 @@ ALTER TABLE `user_information`
 ALTER TABLE `comment_information`
   ADD CONSTRAINT `comment_information_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_information` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `comment_information_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post_information` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `like_information`
+--
+ALTER TABLE `like_information`
+  ADD CONSTRAINT `like_information_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user_information` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `like_information_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `post_information` (`post_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `post_information`
