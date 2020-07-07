@@ -74,6 +74,7 @@ if (isset($_POST["readingPostData"])) {
             }
 
             $data = '<div class= "jumbotron" style = "padding: 24px 30px 24px 30px" >
+
             <div class="row">
 
             <div class="col-md-2 col-4">
@@ -83,23 +84,26 @@ if (isset($_POST["readingPostData"])) {
             <div class="col-md-10 col-8">
             <h3><b>@ ' . $row['username'] . '</b></h3>
 
-            <div class="mt-2">
+            <div class="my-2">
             <span>' . $row['postContent'] . ' </span>
             <hr/>
-            <span><button ' . $repost . '   class= "btn btn-danger float-right repostButton"
+            <span class="mb-2" ><button ' . $repost . '   class= "btn btn-danger float-right repostButton"
             data-post_id= ' . $row["post_id"] . '><i class="fa fa-retweet"></i> ' . countRetweet($conn, $row["post_id"]) . '</button></span>
 
-             <span class="float-right btn btn btn-primary mx-2 toggleButton" id="' . $row["post_id"] . '">
+             <span class="float-right btn btn btn-primary mx-2 toggleButton mb-2" id="' . $row["post_id"] . '">
              <i class="fa fa-comments"></i> ' . commentCount($conn, $row["post_id"]) . '</span>
 
-             <span class="float-right btn btn-info mx-2 likeButton" data-like_id="' . $row["post_id"] . '">
+             <span class="float-right btn btn-info mx-2 mb-2 likeButton" data-like_id="' . $row["post_id"] . '">
              <i class="fa fa-thumbs-up"></i> ' . likeCount($conn, $row["post_id"]) . '</span>
             </div>
 
 
             <form name="commentForm" style="display:none" id="commentForm' . $row["post_id"] . '" >
 
-            <div id= "oldComments' . $row["post_id"] . '" class="mt-3"></div>
+            <div class="row">
+            <div id= "oldComments' . $row["post_id"] . '" class="mt-3">
+            </div>
+            </div>
 
             <textarea name="comments" id="comments' . $row["post_id"] . '" class="form-control"
             cols="30" rows="2"></textarea>
@@ -345,13 +349,13 @@ comment_information.user_id = user_information.user_id  WHERE
 
         }
 
-        $data = '<div class="row">
-
-            <div class="col-md-2">
+        $data = '
+            <div class="row">
+            <div class="col-2">
               ' . $profileImage . '
             </div>
 
-            <div class="col-md-10">
+            <div class="col-10">
             <h6><b>@ ' . $row['username'] . '</b></h6>
             <p class="mt-2">' . $row['comment'] . ' </p>
             </div>
