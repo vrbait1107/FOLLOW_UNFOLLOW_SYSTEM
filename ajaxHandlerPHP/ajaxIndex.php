@@ -497,3 +497,19 @@ if (isset($_POST["likedUsersList"])) {
         echo $output;
     }
 }
+
+if (!empty($_FILES)) {
+
+    $fileExtension = strtolower(pathinfo($_FILES["uploadFile"]["name"], PATHINFO_EXTENSION));
+    $newFileName = rand() . "." . $fileExtension;
+
+    $sourcePath = $_FILES["uploadFile"]["tmp_name"];
+    $targetPath = 'target/' . $_FILES["uploadFile"]["name"];
+
+    if (move_uploaded_file($sourcePath, $targetPath)) {
+        if ($fileExtension == "jpg" || $fileExtension = "png") {
+            echo '<p><img src= "' . $targetPath . '"  class="image-fluid img-thumbnail" /> </p>';
+        }
+    }
+
+}

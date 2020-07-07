@@ -29,9 +29,9 @@ if (!isset($_SESSION['user'])) {
 <body>
 
     <!-- Navbar PHP -->
-    <?php include_once "includes/navbarUser.php";?>
+    <?php include_once "includes/userNavbar.php";?>
 
-
+<div id="layoutSidenav_content">
     <main class="container">
 
         <h4 class="breadcrumb text-uppercase font-time mt-5">User Profile</h4>
@@ -87,6 +87,7 @@ if (!isset($_SESSION['user'])) {
             </section>
         </div>
     </main>
+    </div>
 
 
     <!-- Footer Script -->

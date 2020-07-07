@@ -20,26 +20,42 @@ if (!isset($_SESSION['user'])) {
   <?php include_once "includes/headerScripts.php";?>
 </head>
 
-<body>
+<body class="sb-nav-fixed">
 
 
-  <?php include_once "includes/navbarUser.php";?>
+  <?php include_once "includes/userNavbar.php";?>
 
-  <main class="container my-5">
+  <div id="layoutSidenav_content">
+
+  <main class="container-fluid my-5">
     <div class="row">
       <section class="col-md-8">
         <div class="card">
-          <div class="card-header" >
-            Start Write Here
+          <div class="card-header">
+            <span> Start Write Here </span>
+            <span class="float-right">
+              <form action="" id="uploadImage" name="uploadImage">
+                <div class="form-group">
+                  <label for="uploadFile"><i class="fa fa-upload"></i></label>
+                  <input type="file" name="uploadFile" id="uploadFile" accept=".jpg, .mp4, .png">
+                </div>
+              </form>
+              <span>
           </div>
+
           <div class="card-body">
-            <form action="" method="post" id="postForm" name="postForm" >
-              <div class="form-group">
+
+            <form action="" method="post" id="postForm" name="postForm">
+
+              <div class="form-group" id="dynamicField">
                 <textarea name="post" id="post" cols="30" rows="3" class="form-control"
                   placeholder="What's happening"></textarea>
               </div>
+
               <!-- Response Message -->
               <div id="responseMessage"></div>
+
+              <input type="hidden" name="postType" id="postType" value="text">
               <Button type="submit" class="btn btn-primary float-right">Tweet</Button>
             </form>
           </div>
@@ -52,7 +68,7 @@ if (!isset($_SESSION['user'])) {
             Trending Now
           </div>
           <div class="card-body">
-            <!-- Response Data -->
+            <!-- Ajax Response Data -->
             <div id="responsePostData"></div>
             <div id="responseComment"></div>
             <div id="responseRetweet"></div>
@@ -69,13 +85,14 @@ if (!isset($_SESSION['user'])) {
         <div class="card">
           <div class="card-header">Who to Follow</div>
           <div class="card-body">
-            <!-- Users Profile Data-->
+            <!-- Ajax Response Users Profile Data-->
             <div id="responseUserProfiles"></div>
           </div>
 
       </section>
     </div>
   </main>
+  </div>
 
   <!-- include footer script -->
   <?php include_once "includes/footerScripts.php";?>

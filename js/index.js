@@ -50,8 +50,13 @@ $(document).ready(function () {
 
   $("#postForm").on("submit", function (e) {
     e.preventDefault();
-    let post = $("#post").val();
+
+    var post = $("#post").val();
     let insert = "insert";
+
+    if ($("#postType" === "upload")) {
+      var post = $("#post").val($("#subDivision").html());
+    }
 
     if (post === "") {
       alert("Story Cannot be Empty");
@@ -270,3 +275,24 @@ function likeTooltip() {
 
   return tooltipData;
 }
+
+//---------------------------------->> UPLOAD IMAGE AND VIDEO AS POST
+
+$("#uploadFile").on("change", function (event) {
+  var html = '<div id= "mainDivision"> <div id= "subDivision"> </div> </div>';
+
+  // This Will Replace with Test Story Input
+  html += '<input type="hidden" name="post" id= "post">';
+
+  // This will indicate that user wants to share Images and Videoes
+  $("#postType").val("upload");
+
+  // This will replace normal story content with above code
+  $("#dynamicField").html(html);
+
+  // This Will Show uploaded Image and Video in Subdivision
+  $("#uploadImage").ajaxSubmit({
+    target: "#subDivision",
+    resetForm: true,
+  });
+});
