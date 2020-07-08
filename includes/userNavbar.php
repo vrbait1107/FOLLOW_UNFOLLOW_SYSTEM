@@ -31,11 +31,11 @@
                     <a class="nav-link" href="userProfile.php"><h5><i class="fa fa-user mx-2"></i>Profile</h5></a>
                 </div>
 
-                <button class="btn btn-primary rounded-pill text-center btn-block">Tweet</button>
+                <div class="text-center mt-4">
+                <button class="btn btn-primary px-5 rounded-pill">Tweet</button>
+                </div>
 
-
-                    <!-- Participants-->
-                    <a class="nav-link collapsed mt-5 text-center" href="#" data-toggle="collapse" data-target="#options"
+                    <a class="nav-link collapsed mt-3 text-center" href="#" data-toggle="collapse" data-target="#options"
                         aria-expanded="false" aria-controls="options">
                         <h6 class="text-center"> Logged in By </h6>
                         <h5>@<?php echo $_SESSION['username']; ?>  <i class="fa fa-angle-down ml-2"></i> </h5>
@@ -46,7 +46,7 @@
                         <nav class="sb-sidenav-menu-nested nav">
                            <a class="dropdown-item" href="userAccount.php">Account</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="logout.php">Log out</a>
+                    <a class="dropdown-item" id="logout" href="#">Log out</a>
                         </nav>
                     </div>
 
