@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 06, 2020 at 08:29 AM
+-- Generation Time: Jul 11, 2020 at 02:15 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -45,7 +45,8 @@ INSERT INTO `comment_information` (`comment_id`, `user_id`, `post_id`, `comment`
 (13, 4, 7, 'Hiii, Vishal', '2020-07-05 14:21:26'),
 (14, 4, 8, 'Hii, Saurabh', '2020-07-05 14:21:41'),
 (15, 4, 6, 'Hii Vikram', '2020-07-05 14:24:13'),
-(16, 4, 8, 'How are You?', '2020-07-05 14:24:43');
+(16, 4, 8, 'How are You?', '2020-07-05 14:24:43'),
+(17, 2, 8, 'Hii, Saurabh', '2020-07-07 19:33:54');
 
 -- --------------------------------------------------------
 
@@ -91,7 +92,8 @@ INSERT INTO `like_information` (`like_id`, `user_id`, `post_id`) VALUES
 (3, 2, 11),
 (4, 2, 10),
 (5, 2, 7),
-(6, 2, 8);
+(6, 2, 8),
+(7, 2, 6);
 
 -- --------------------------------------------------------
 
@@ -153,6 +155,7 @@ CREATE TABLE `user_information` (
   `bio` varchar(255) DEFAULT NULL,
   `followers` int(10) NOT NULL DEFAULT '0',
   `token` varchar(100) DEFAULT NULL,
+  `tokenDate` datetime DEFAULT NULL,
   `status` varchar(30) DEFAULT 'disable'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -160,11 +163,11 @@ CREATE TABLE `user_information` (
 -- Dumping data for table `user_information`
 --
 
-INSERT INTO `user_information` (`user_id`, `username`, `email`, `password`, `name`, `profileImage`, `bio`, `followers`, `token`, `status`) VALUES
-(2, 'Vishal1107', 'vishalbait01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', 'Vishal Bait', 'developer1.jpg', 'Full Stack Developer', 2, '0bf64bc982849a423a82863a571d76', 'active'),
-(3, 'Saurabh01', 'saurabh01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 2, NULL, 'active'),
-(4, 'Vikram01', 'vikram01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 2, NULL, 'active'),
-(6, 'Sudesh01', 'sudeshbait999@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 0, '17388c5e64261cc11190964da6f68d', 'active');
+INSERT INTO `user_information` (`user_id`, `username`, `email`, `password`, `name`, `profileImage`, `bio`, `followers`, `token`, `tokenDate`, `status`) VALUES
+(2, 'Vishal1107', 'vishalbait01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', 'Vishal Bait', 'developer1.jpg', 'Full Stack Developer', 2, '0bf64bc982849a423a82863a571d76', NULL, 'active'),
+(3, 'Saurabh01', 'saurabh01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 2, NULL, NULL, 'active'),
+(4, 'Vikram01', 'vikram01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 2, NULL, NULL, 'active'),
+(6, 'Sudesh01', 'sudeshbait999@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 0, '17388c5e64261cc11190964da6f68d', NULL, 'active');
 
 --
 -- Indexes for dumped tables
@@ -222,7 +225,7 @@ ALTER TABLE `user_information`
 -- AUTO_INCREMENT for table `comment_information`
 --
 ALTER TABLE `comment_information`
-  MODIFY `comment_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `comment_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT for table `follow_information`
@@ -234,7 +237,7 @@ ALTER TABLE `follow_information`
 -- AUTO_INCREMENT for table `like_information`
 --
 ALTER TABLE `like_information`
-  MODIFY `like_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `like_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `post_information`
