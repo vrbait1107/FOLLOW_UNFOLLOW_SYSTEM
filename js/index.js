@@ -279,14 +279,13 @@ function likeTooltip() {
 //---------------------------------->> UPLOAD IMAGE AND VIDEO AS POST
 
 $("#uploadFile").on("change", function (event) {
-  var html = '<div id= "mainDivision"> <div id= "subDivision"> </div> </div>';
-
-  // This Will Replace with Test Story Input
-  html += '<input type="hidden" name="post" id= "post">';
+  var html =
+    '<div id= "mainDivision"> <div id= "subDivision"> </div> </div> <input type="hidden" name="post" id= "post">';
 
   // This will indicate that user wants to share Images and Videoes
   $("#postType").val("upload");
 
+  $("#dynamicField").html("");
   // This will replace normal story content with above code
   $("#dynamicField").html(html);
 

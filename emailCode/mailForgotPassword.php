@@ -25,6 +25,7 @@ $mail->msgHTML("<!doctype html>
     for your user account at Follow Unfollow System</p>
     <p>Please go to the following page and choose a new password:</p>
     <p>http://localhost//resetPassword.php?token=$token</p>
+    <p> This Link valid for 45 Minutes Only </p>
     <p>If you didn't request this change, you can disregard this email - we have not yet reset your password.</p>
     <p>Thanks for using our site!</p>
     <p> The Follow Unfollow System Team<p>
@@ -34,6 +35,7 @@ $mail->AltBody = "$email You're receiving this e-mail because you requested a pa
     for your user account at Follow Unfollow System <br/>
     Please go to the following page and choose a new password: <br/>
     http://localhost/follow-unfollow-system/resetPassword.php?token=$token<br/>
+    This Link valid for 45 Minutes Only <br/>
     If you didn't request this change, you can disregard this email - we have not yet reset your password. <br/>
      Thanks for using our site!<br/>
      The Follow Unfollow System Team";

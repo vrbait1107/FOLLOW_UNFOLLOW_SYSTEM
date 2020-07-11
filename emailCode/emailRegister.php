@@ -35,7 +35,7 @@
     Unfollow System account. To activate your account, click the following link. If that
     doesn't work, copy and paste the link into your browser's address bar.</p>
     <p>http://localhost/follow-unfollow-system/activateEmail.php?token=$token</p>
-
+    <p>This link is valid for 24 Hours Only</p>
     <p>If you didn't create an account, you don't need to do anything; you won't
     receive any more email from us. If you need assistance, please do not reply to
     this email message. Check the help section of the Follow Unfollow System website.</p>
@@ -48,6 +48,7 @@
   account. To activate your account, click the following link. If that doesn't work, copy and paste the link into
   your browser's address bar. <br/>
   http://localhost/follow-unfollow-system/activateEmail.php?token=$token <br/>
+  This link is valid for 24 Hours Only <br/>
   If you didn't create an account, you don't need to do anything; you won't receive any more email from us. If you
   need assistance, please do not reply to this email message. Check the help section of the follow-unfollow-system.";
 

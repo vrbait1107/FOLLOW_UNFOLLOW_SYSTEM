@@ -27,71 +27,73 @@ if (!isset($_SESSION['user'])) {
 
   <div id="layoutSidenav_content">
 
-  <main class="container-fluid my-5">
-    <div class="row">
-      <section class="col-md-8">
-        <div class="card">
-          <div class="card-header">
-            <span> Start Write Here </span>
-            <span class="float-right">
-              <form action="" id="uploadImage" name="uploadImage">
-                <div class="form-group">
-                  <label for="uploadFile"><i class="fa fa-upload"></i></label>
-                  <input type="file" name="uploadFile" id="uploadFile" accept=".jpg, .mp4, .png">
+    <main class="container-fluid my-5">
+      <div class="row">
+        <section class="col-md-8">
+          <div class="card">
+            <div class="card-header">
+              <span> Start Write Here </span>
+              <span class="float-right">
+                <form action="" id="uploadImage" name="uploadImage">
+                  <div class="form-group">
+                    <label for="uploadFile"><i class="fa fa-upload"></i></label>
+                    <input type="file" name="uploadFile" id="uploadFile" accept=".jpg, .mp4, .png">
+                  </div>
+                </form>
+                <span>
+            </div>
+
+            <div class="card-body">
+
+              <form action="" method="post" id="postForm" name="postForm">
+                <!-- Response Message -->
+                <div id="responseMessage"></div>
+
+                <div id="dynamicField">
+                  <div class="form-group">
+                    <textarea name="post" id="post" cols="30" rows="3" class="form-control"
+                      placeholder="What's happening"></textarea>
+                  </div>
                 </div>
+
+                <input type="hidden" name="postType" id="postType" value="text">
+                <button type="submit" class="btn btn-primary float-right">Tweet</button>
+
               </form>
-              <span>
+            </div>
           </div>
 
-          <div class="card-body">
+          <!--Trending Now-->
 
-            <form action="" method="post" id="postForm" name="postForm">
-
-              <div class="form-group" id="dynamicField">
-                <textarea name="post" id="post" cols="30" rows="3" class="form-control"
-                  placeholder="What's happening"></textarea>
-              </div>
-
-              <!-- Response Message -->
-              <div id="responseMessage"></div>
-
-              <input type="hidden" name="postType" id="postType" value="text">
-              <Button type="submit" class="btn btn-primary float-right">Tweet</Button>
-            </form>
+          <div class="card mt-5">
+            <div class="card-header">
+              Trending Now
+            </div>
+            <div class="card-body">
+              <!-- Ajax Response Data -->
+              <div id="responsePostData"></div>
+              <div id="responseComment"></div>
+              <div id="responseRetweet"></div>
+              <div id="responseLike"></div>
+            </div>
           </div>
-        </div>
+        </section>
 
-        <!--Trending Now-->
+        <section class="col-md-4">
 
-        <div class="card mt-5">
-          <div class="card-header">
-            Trending Now
-          </div>
-          <div class="card-body">
-            <!-- Ajax Response Data -->
-            <div id="responsePostData"></div>
-            <div id="responseComment"></div>
-            <div id="responseRetweet"></div>
-            <div id="responseLike"></div>
-          </div>
-        </div>
-      </section>
+          <div id="responseFollow"></div>
+          <div id="responseUnfollow"></div>
 
-      <section class="col-md-4">
+          <div class="card">
+            <div class="card-header">Who to Follow</div>
+            <div class="card-body">
+              <!-- Ajax Response Users Profile Data-->
+              <div id="responseUserProfiles"></div>
+            </div>
 
-        <div id="responseFollow"></div>
-        <div id="responseUnfollow"></div>
-
-        <div class="card">
-          <div class="card-header">Who to Follow</div>
-          <div class="card-body">
-            <!-- Ajax Response Users Profile Data-->
-            <div id="responseUserProfiles"></div>
-          </div>
-
-      </section>
-    </div>
-  </main>
+        </section>
+      </div>
+    </main>
   </div>
 
   <!-- include footer script -->

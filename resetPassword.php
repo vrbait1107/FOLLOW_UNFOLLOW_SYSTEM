@@ -44,32 +44,54 @@ if (isset($_GET['token'])) {
             $newPassword = password_hash($newPassword, PASSWORD_BCRYPT);
             $confirmNewPassword = password_hash($confirmNewPassword, PASSWORD_BCRYPT);
 
-            // SQL Query
-            $sql = "UPDATE user_information SET password= :newPassword WHERE token = :token";
+            $sql1 = "SELECT * FROM user_information WHERE token = :token";
+            $result1 = $conn->prepare($sql1);
+            $result1->bindValue(":token", $token);
+            $result1->execute();
 
-            // Preparing Query
-            $result = $conn->prepare($sql);
+            $row = $result1->fetch(PDO::FETCH_ASSOC);
+            $dbtokenDate = strtotime($row["tokenDate"]);
 
-            // Binding Value
-            $result->bindValue(":newPassword", $newPassword);
-            $result->bindValue(":token", $token);
+            $currentDatetime = date("Y-m-d H:i:s");
+            $currentDatetimeMain = strtotime($currentDatetime);
 
-            //Executing Query
-            $result->execute();
+            if ($dbtokenDate >= $currentDatetimeMain) {
 
-            if ($result) {
-                echo "<script>Swal.fire({
+                // SQL Query
+                $sql = "UPDATE user_information SET password= :newPassword WHERE token = :token";
+
+                // Preparing Query
+                $result = $conn->prepare($sql);
+
+                // Binding Value
+                $result->bindValue(":newPassword", $newPassword);
+                $result->bindValue(":token", $token);
+
+                //Executing Query
+                $result->execute();
+
+                if ($result) {
+                    echo "<script>Swal.fire({
             icon: 'success',
             title: 'Successful',
             text: 'Your Password Reset Successful, Please Login to Continue'
             })</script>";
 
-            } else {
-                echo "<script>Swal.fire({
+                } else {
+                    echo "<script>Swal.fire({
             icon: 'error',
             title: 'Error',
             text: 'We failed to Your Password'
             })</script>";
+
+                }
+
+            }else{
+                echo "<script>Swal.fire({
+                        icon: 'warning',
+                        title: 'Token Time Expired',
+                        text: 'Please Request Again'
+                    })</script>";
 
             }
 

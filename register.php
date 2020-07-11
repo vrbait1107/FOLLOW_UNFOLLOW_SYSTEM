@@ -46,8 +46,12 @@ if (isset($_POST["register"])) {
 
         } else {
 
+            $tokenDate = date("Y-m-d H:i:s");
+            $tokenDateMain = date('Y-m-d H:i:s', strtotime('+1 day', strtotime($tokenDate)));
+
             // Query
-            $sql = "INSERT INTO user_information (username, email, password, token) VALUES (:username, :email, :password, :token)";
+            $sql = "INSERT INTO user_information (username, email, password, token, tokenDate)
+            VALUES (:username, :email, :password, :token, :tokenDateMain)";
 
             //Preparing Query
             $result = $conn->prepare($sql);
@@ -57,6 +61,7 @@ if (isset($_POST["register"])) {
             $result->bindValue(":email", $email);
             $result->bindValue(":password", $hashPassword);
             $result->bindValue(":token", $token);
+            $result->bindValue(":tokenDateMain", $tokenDateMain);
 
             // Executing Query
             $result->execute();
