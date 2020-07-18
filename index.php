@@ -29,34 +29,22 @@ if (!isset($_SESSION['user'])) {
 
     <main class="container-fluid my-5">
       <div class="row">
+
         <section class="col-md-8">
           <div class="card">
+
             <div class="card-header">
               <span> Start Write Here </span>
-              <span class="float-right">
-                <form action="" id="uploadImage" name="uploadImage">
-                  <div class="form-group">
-                    <label for="uploadFile"><i class="fa fa-upload"></i></label>
-                    <input type="file" name="uploadFile" id="uploadFile" accept=".jpg, .mp4, .png">
-                  </div>
-                </form>
-                <span>
             </div>
 
             <div class="card-body">
-
               <form action="" method="post" id="postForm" name="postForm">
                 <!-- Response Message -->
                 <div id="responseMessage"></div>
-
-                <div id="dynamicField">
-                  <div class="form-group">
-                    <textarea name="post" id="post" cols="30" rows="3" class="form-control"
-                      placeholder="What's happening"></textarea>
-                  </div>
+                <div class="form-group">
+                  <textarea name="post" id="post" cols="30" rows="3" class="form-control"
+                    placeholder="What's happening"></textarea>
                 </div>
-
-                <input type="hidden" name="postType" id="postType" value="text">
                 <button type="submit" class="btn btn-primary float-right">Tweet</button>
 
               </form>

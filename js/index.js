@@ -106,6 +106,28 @@ const followUser = (id) => {
   });
 };
 
+//--------------------------------> LIKE POST AJAX REQUEST
+
+const likePost = (id) => {
+  let postId = id;
+  let likeButton = "like";
+
+  $.ajax({
+    url: "ajaxHandlerPHP/ajaxIndex.php",
+    type: "post",
+    data: {
+      postId: postId,
+      likeButton: likeButton,
+    },
+    success(data) {
+      readingPost();
+    },
+    error(err) {
+      alert("Something Went Wrong");
+    },
+  });
+};
+
 //--------------------------------> UNFOLLOW USER AJAX REQUEST
 
 const unfollowUser = (id) => {
@@ -134,8 +156,42 @@ const unfollowUser = (id) => {
           readingUserProfiles();
           readingPost();
         },
-        error() {
-          $("#responseUnfollow").html("Something Went Wrong");
+        error(err) {
+          alert(err);
+        },
+      });
+    }
+  });
+};
+
+//--------------------------------> UNLIKE POST AJAX REQUEST
+
+const unlikePost = (id) => {
+  let postId = id;
+  let unlikeButton = "unlike";
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to Unfollow this Post?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Unlike",
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: "ajaxHandlerPHP/ajaxIndex.php",
+        type: "post",
+        data: {
+          postId: postId,
+          unlikeButton: unlikeButton,
+        },
+        success(data) {
+          readingPost();
+        },
+        error(err) {
+          alert(err);
         },
       });
     }
@@ -220,29 +276,6 @@ $(document).on("click", ".repostButton", function () {
   });
 });
 
-// ----------------------------------------------------->> LIKE FUNCTIONALITY
-
-$(document).on("click", ".likeButton", function () {
-  let postId = $(this).data("like_id");
-  let likeButton = "like";
-
-  $.ajax({
-    url: "ajaxHandlerPHP/ajaxIndex.php",
-    type: "post",
-    data: {
-      postId: postId,
-      likeButton: likeButton,
-    },
-    success(data) {
-      $("#responseLike").html(data);
-      readingPost();
-    },
-    error(err) {
-      alert("Something Went Wrong");
-    },
-  });
-});
-
 //-------------------------------------------->> LIKE TOOLTIP FUNCTIONALITY
 
 $("body").tooltip({
@@ -275,23 +308,3 @@ function likeTooltip() {
 
   return tooltipData;
 }
-
-//---------------------------------->> UPLOAD IMAGE AND VIDEO AS POST
-
-$("#uploadFile").on("change", function (event) {
-  var html =
-    '<div id= "mainDivision"> <div id= "subDivision"> </div> </div> <input type="hidden" name="post" id= "post">';
-
-  // This will indicate that user wants to share Images and Videoes
-  $("#postType").val("upload");
-
-  $("#dynamicField").html("");
-  // This will replace normal story content with above code
-  $("#dynamicField").html(html);
-
-  // This Will Show uploaded Image and Video in Subdivision
-  $("#uploadImage").ajaxSubmit({
-    target: "#subDivision",
-    resetForm: true,
-  });
-});

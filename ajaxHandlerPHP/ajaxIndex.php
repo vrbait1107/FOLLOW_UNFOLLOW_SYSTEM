@@ -87,14 +87,16 @@ if (isset($_POST["readingPostData"])) {
             <div class="my-2">
             <span>' . $row['postContent'] . ' </span>
             <hr/>
+
             <span class="mb-2" ><button ' . $repost . '   class= "btn btn-danger float-right repostButton"
             data-post_id= ' . $row["post_id"] . '><i class="fa fa-retweet"></i> ' . countRetweet($conn, $row["post_id"]) . '</button></span>
 
-             <span class="float-right btn btn btn-primary mx-2 toggleButton mb-2" id="' . $row["post_id"] . '">
-             <i class="fa fa-comments"></i> ' . commentCount($conn, $row["post_id"]) . '</span>
+             <span style= "font-size: 20px" class="float-right mx-2 toggleButton mb-2" id="' . $row["post_id"] . '">
+             <i class="fa fa-comment-o"></i> ' . commentCount($conn, $row["post_id"]) . '</span>
 
-             <span class="float-right btn btn-info mx-2 mb-2 likeButton" data-like_id="' . $row["post_id"] . '">
-             <i class="fa fa-thumbs-up"></i> ' . likeCount($conn, $row["post_id"]) . '</span>
+
+             ' . like_unlike_function($conn, $row["post_id"], $userId) . '
+
             </div>
 
 
@@ -274,7 +276,7 @@ function countRetweet($conn, $postId)
     return $count;
 }
 
-// ----------------------------------------> FOLLOW UNFOLLOW BUTTON
+// ----------------------------------------> FOLLOW UNFOLLOW FUNCTIONALITY
 
 // Followers Id means User that is login that users id
 // Following Id means that Users Id which We Want to Follow
@@ -303,7 +305,35 @@ function make_follow_button($conn, $following_id, $followers_id)
     return $output;
 }
 
-extract($_POST);
+// ----------------------------------------> LIKE UNLIKE FUNCTIONALITY
+
+function like_unlike_function($conn, $postId, $userId)
+{
+
+    $sql = "SELECT * FROM like_information WHERE post_id = :postId AND user_id = :userId";
+
+    $result = $conn->prepare($sql);
+
+    $result->bindValue(":postId", $postId);
+    $result->bindValue(":userId", $userId);
+
+    $result->execute();
+
+    if ($result->rowCount() > 0) {
+
+        $output = '<span style= "font-size: 20px" class="float-right text-danger mx-2 mb-2
+        likeButton" data-like_id="' . $postId . '">
+        <i class="fa fa-heart"  onclick= unlikePost(' . $postId . ')></i> ' . likeCount($conn, $postId) . '</span>';
+
+    } else {
+        $output = '<span style= "font-size: 20px" class="float-right mx-2 mb-2
+         likeButton" data-like_id="' . $postId . '">
+             <i class="fa fa-heart-o" onclick= likePost(' . $postId . ') ></i> ' . likeCount($conn, $postId) . '</span>';
+
+    }
+
+    return $output;
+}
 
 //--------------------------------> INSRTING COMMENT
 
@@ -441,47 +471,26 @@ if (isset($_POST["retweet"])) {
 
 if (isset($_POST["likeButton"])) {
 
-    $sqlLike = "SELECT * FROM like_information WHERE post_id = :postId AND user_id = :userId";
+    $sql = "INSERT INTO like_information (post_id, user_id) VALUES (:postId, :userId)";
+    $result = $conn->prepare($sql);
 
-    $resultLike = $conn->prepare($sqlLike);
-    $resultLike->bindValue(":postId", $postId);
-    $resultLike->bindValue(":userId", $userId);
+    $result->bindValue(":postId", $postId);
+    $result->bindValue(":userId", $userId);
 
-    $resultLike->execute();
+    $result->execute();
+}
 
-    if ($resultLike->rowCount() > 0) {
+// ------------------------------------------>> UNLIKE FUNCTIONALITY
 
-        echo "<script>Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: 'You already liked this tweet'
-            })</script>";
+if (isset($_POST["unlikeButton"])) {
 
-    } else {
-        $sqlLike1 = "INSERT INTO like_information (post_id, user_id) VALUES (:postId, :userId)";
-        $resultLike1 = $conn->prepare($sqlLike1);
+    $sql = "DELETE FROM like_information WHERE post_id = :postId AND user_id = :userId";
+    $result = $conn->prepare($sql);
 
-        $resultLike1->bindValue(":postId", $postId);
-        $resultLike1->bindValue(":userId", $userId);
+    $result->bindValue(":postId", $postId);
+    $result->bindValue(":userId", $userId);
 
-        $resultLike1->execute();
-
-        if ($resultLike1) {
-            echo "<script>Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'You liked tweet'
-            })</script>";
-
-        } else {
-            echo "<script>Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Failed to like tweet'
-            })</script>";
-        }
-
-    }
+    $result->execute();
 }
 
 //------------------------------------------->> TOOLTIP FOR LIKE FUNCTIONALITY
@@ -500,20 +509,4 @@ if (isset($_POST["likedUsersList"])) {
 
         echo $output;
     }
-}
-
-if (!empty($_FILES)) {
-
-    $fileExtension = strtolower(pathinfo($_FILES["uploadFile"]["name"], PATHINFO_EXTENSION));
-    $newFileName = rand() . "." . $fileExtension;
-
-    $sourcePath = $_FILES["uploadFile"]["tmp_name"];
-    $targetPath = 'target/' . $_FILES["uploadFile"]["name"];
-
-    if (move_uploaded_file($sourcePath, $targetPath)) {
-        if ($fileExtension == "jpg" || $fileExtension = "png") {
-            echo '<p><img src= "' . $targetPath . '"  class="image-fluid img-thumbnail" /> </p>';
-        }
-    }
-
 }
