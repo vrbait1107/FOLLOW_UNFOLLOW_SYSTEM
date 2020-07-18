@@ -128,6 +128,28 @@ const likePost = (id) => {
   });
 };
 
+//--------------------------------> RETWEET POST AJAX REQUEST
+
+const retweet = (id) => {
+  let postId = id;
+  let retweet = "retweet";
+
+  $.ajax({
+    url: "ajaxHandlerPHP/ajaxIndex.php",
+    type: "post",
+    data: {
+      postId: postId,
+      retweet: retweet,
+    },
+    success(data) {
+      readingPost();
+    },
+    error(err) {
+      alert("Something Went Wrong");
+    },
+  });
+};
+
 //--------------------------------> UNFOLLOW USER AJAX REQUEST
 
 const unfollowUser = (id) => {
@@ -198,6 +220,41 @@ const unlikePost = (id) => {
   });
 };
 
+//--------------------------------> UNTWEET POST AJAX REQUEST
+
+const untweet = (id) => {
+  let postId = id;
+  let untweet = "untweet";
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to Undo this Retweet?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Undo Retweet",
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: "ajaxHandlerPHP/ajaxIndex.php",
+        type: "post",
+        data: {
+          postId: postId,
+          untweet: untweet,
+        },
+        success(data) {
+          $("#responseRetweet").html(data);
+          readingPost();
+        },
+        error(err) {
+          alert(err);
+        },
+      });
+    }
+  });
+};
+
 //-------------------------------> COMMENT TOGGLE
 
 var post_id;
@@ -249,29 +306,6 @@ $(document).on("click", ".insertComment", function (e) {
     },
     error() {
       $("#responseComment").html("Something Went Wrong");
-    },
-  });
-});
-
-//---------------------------------------> RETWEET FUNCTIONALITY
-
-$(document).on("click", ".repostButton", function () {
-  let postId = $(this).data("post_id");
-  let retweet = "retweet";
-
-  $.ajax({
-    url: "ajaxHandlerPHP/ajaxIndex.php",
-    type: "post",
-    data: {
-      postId: postId,
-      retweet: retweet,
-    },
-    success(data) {
-      $("#responseRetweet").html(data);
-      readingPost();
-    },
-    error(err) {
-      alert("Something Went Wrong");
     },
   });
 });

@@ -88,12 +88,10 @@ if (isset($_POST["readingPostData"])) {
             <span>' . $row['postContent'] . ' </span>
             <hr/>
 
-            <span class="mb-2" ><button ' . $repost . '   class= "btn btn-danger float-right repostButton"
-            data-post_id= ' . $row["post_id"] . '><i class="fa fa-retweet"></i> ' . countRetweet($conn, $row["post_id"]) . '</button></span>
+            ' . retweet_untweet_function($conn, $row["post_id"], $userId) . '
 
              <span style= "font-size: 20px" class="float-right mx-2 toggleButton mb-2" id="' . $row["post_id"] . '">
              <i class="fa fa-comment-o"></i> ' . commentCount($conn, $row["post_id"]) . '</span>
-
 
              ' . like_unlike_function($conn, $row["post_id"], $userId) . '
 
@@ -233,6 +231,107 @@ if (isset($_POST["unfollow"])) {
     }
 }
 
+// ------------------------------------------>> LIKE FUNCTIONALITY
+
+if (isset($_POST["likeButton"])) {
+
+    $sql = "INSERT INTO like_information (post_id, user_id) VALUES (:postId, :userId)";
+    $result = $conn->prepare($sql);
+
+    $result->bindValue(":postId", $postId);
+    $result->bindValue(":userId", $userId);
+
+    $result->execute();
+}
+
+// ------------------------------------------>> UNLIKE FUNCTIONALITY
+
+if (isset($_POST["unlikeButton"])) {
+
+    $sql = "DELETE FROM like_information WHERE post_id = :postId AND user_id = :userId";
+    $result = $conn->prepare($sql);
+
+    $result->bindValue(":postId", $postId);
+    $result->bindValue(":userId", $userId);
+
+    $result->execute();
+}
+
+//---------------------------------------->> RETWEET FUNCTIONALITY
+
+if (isset($_POST["retweet"])) {
+
+    $sql = "INSERT INTO repost_information (post_id, user_id) VALUES (:postId, :userId)";
+
+    $result = $conn->prepare($sql);
+
+    $result->bindValue(":postId", $postId);
+    $result->bindValue(":userId", $userId);
+
+    if ($result->execute()) {
+
+        $sql1 = "SELECT * FROM post_information WHERE post_id = :postId";
+
+        $result1 = $conn->prepare($sql1);
+
+        $result1->bindValue(":postId", $postId);
+
+        $result1->execute();
+
+        $row = $result1->fetch(PDO::FETCH_ASSOC);
+
+        $postContent = $row['postContent'];
+
+        $sql2 = "INSERT INTO post_information (user_id, postContent) VALUES (:userId, :post)";
+
+        $result2 = $conn->prepare($sql2);
+        $result2->bindValue(":userId", $userId);
+        $result2->bindValue(":post", $postContent);
+
+        $result2->execute();
+
+    }
+
+}
+
+//---------------------------------------->> UNTWEET FUNCTIONALITY
+
+if (isset($_POST["untweet"])) {
+
+    $sql = "DELETE FROM repost_information WHERE post_id = :postId AND user_id = :userId";
+
+    $result = $conn->prepare($sql);
+
+    $result->bindValue(":postId", $postId);
+    $result->bindValue(":userId", $userId);
+
+    if ($result->execute()) {
+
+        $sql1 = "SELECT * FROM post_information WHERE post_id = :postId";
+
+        $result1 = $conn->prepare($sql1);
+
+        $result1->bindValue(":postId", $postId);
+
+        $result1->execute();
+
+        $row = $result1->fetch(PDO::FETCH_ASSOC);
+
+        $postContent = $row['postContent'];
+
+        $sql2 = "DELETE FROM post_information WHERE user_id = :userId AND  postContent = :post";
+
+        $result2 = $conn->prepare($sql2);
+
+        $result2->bindValue(":userId", $userId);
+        $result2->bindValue(":post", $postContent);
+
+        $result2->execute();
+
+    }
+
+}
+
 //-------------------------------------------> COUNT COMMENT
 
 function commentCount($conn, $post_id)
@@ -321,15 +420,41 @@ function like_unlike_function($conn, $postId, $userId)
 
     if ($result->rowCount() > 0) {
 
-        $output = '<span style= "font-size: 20px" class="float-right text-danger mx-2 mb-2
-        likeButton" data-like_id="' . $postId . '">
+        $output = '<span style= "font-size: 20px" class="float-right text-danger mx-2 mb-2 likeButton" data-like_id ="' . $postId . '">
         <i class="fa fa-heart"  onclick= unlikePost(' . $postId . ')></i> ' . likeCount($conn, $postId) . '</span>';
 
     } else {
-        $output = '<span style= "font-size: 20px" class="float-right mx-2 mb-2
-         likeButton" data-like_id="' . $postId . '">
+        $output = '<span style= "font-size: 20px" class="float-right mx-2 mb-2 likeButton" data-like_id ="' . $postId . '">
              <i class="fa fa-heart-o" onclick= likePost(' . $postId . ') ></i> ' . likeCount($conn, $postId) . '</span>';
 
+    }
+
+    return $output;
+}
+
+// ----------------------------------------> RETWEET UNTWEET FUNCTIONALITY
+
+function retweet_untweet_function($conn, $postId, $userId)
+{
+    $sql = "SELECT * FROM repost_information WHERE post_id = :postId AND user_id = :userId";
+
+    $result = $conn->prepare($sql);
+
+    $result->bindValue(":postId", $postId);
+    $result->bindValue(":userId", $userId);
+
+    $result->execute();
+
+    if ($result->rowCount() > 0) {
+
+        $output = '<span class="mb-2 mx-2 float-right repostButton text-success" style="font-size:20px">
+        <i class="fa fa-retweet" onclick= untweet(' . $postId . ') ></i>
+             ' . countRetweet($conn, $postId) . '</span>';
+
+    } else {
+        $output = '<span class="mb-2 mx-2 float-right repostButton" style="font-size:20px">
+        <i class="fa fa-retweet" onclick= retweet(' . $postId . ')></i>
+             ' . countRetweet($conn, $postId) . '</span>';
     }
 
     return $output;
@@ -393,104 +518,6 @@ comment_information.user_id = user_information.user_id  WHERE
 
         echo $data;
     }
-}
-
-//---------------------------------------->> RETWEET FUNCTIONALITY
-
-if (isset($_POST["retweet"])) {
-
-    $sql1 = "SELECT  * FROM repost_information WHERE post_id = :postId AND user_id = :userId";
-
-    $result1 = $conn->prepare($sql1);
-
-    $result1->bindValue(":postId", $postId);
-    $result1->bindValue(":userId", $userId);
-
-    $result1->execute();
-
-    if ($result1->rowCount() > 0) {
-        echo "<script>Swal.fire({
-                icon: 'warning',
-                title: 'Warning',
-                text: 'Your already reposted this tweet'
-            })</script>";
-
-    } else {
-
-        $sql2 = "INSERT INTO repost_information (post_id, user_id) VALUES (:postId ,:userId)";
-
-        $result2 = $conn->prepare($sql2);
-
-        $result2->bindValue(":postId", $postId);
-        $result2->bindValue(":userId", $userId);
-
-        if ($result2->execute()) {
-
-            $sql3 = "SELECT * FROM post_information WHERE post_id = :postId";
-
-            $result3 = $conn->prepare($sql3);
-
-            $result3->bindValue(":postId", $postId);
-
-            $result3->execute();
-
-            $row = $result3->fetch(PDO::FETCH_ASSOC);
-
-            $postContent = $row['postContent'];
-
-            $sql4 = "INSERT INTO post_information (user_id, postContent) VALUES (:userId, :post)";
-
-            $result4 = $conn->prepare($sql4);
-            $result4->bindValue(":userId", $userId);
-            $result4->bindValue(":post", $postContent);
-
-            $result4->execute();
-
-            if ($result4) {
-                echo "<script>Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Post Successfully Reposted'
-            })</script>";
-
-            } else {
-                echo "<script>Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'We failed to repost the tweet'
-            })</script>";
-
-            }
-
-        }
-
-    }
-}
-
-// ------------------------------------------>> LIKE FUNCTIONALITY
-
-if (isset($_POST["likeButton"])) {
-
-    $sql = "INSERT INTO like_information (post_id, user_id) VALUES (:postId, :userId)";
-    $result = $conn->prepare($sql);
-
-    $result->bindValue(":postId", $postId);
-    $result->bindValue(":userId", $userId);
-
-    $result->execute();
-}
-
-// ------------------------------------------>> UNLIKE FUNCTIONALITY
-
-if (isset($_POST["unlikeButton"])) {
-
-    $sql = "DELETE FROM like_information WHERE post_id = :postId AND user_id = :userId";
-    $result = $conn->prepare($sql);
-
-    $result->bindValue(":postId", $postId);
-    $result->bindValue(":userId", $userId);
-
-    $result->execute();
 }
 
 //------------------------------------------->> TOOLTIP FOR LIKE FUNCTIONALITY
