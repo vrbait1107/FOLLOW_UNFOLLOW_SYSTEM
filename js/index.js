@@ -54,10 +54,6 @@ $(document).ready(function () {
     var post = $("#post").val();
     let insert = "insert";
 
-    if ($("#postType" === "upload")) {
-      var post = $("#post").val($("#subDivision").html());
-    }
-
     if (post === "") {
       alert("Story Cannot be Empty");
       return false;
@@ -245,6 +241,41 @@ const untweet = (id) => {
         },
         success(data) {
           $("#responseRetweet").html(data);
+          readingPost();
+        },
+        error(err) {
+          alert(err);
+        },
+      });
+    }
+  });
+};
+
+// ---------------------------------->> DELETE POST
+
+const deletePost = (id) => {
+  let postId = id;
+  let postDelete = "postDelete";
+
+  Swal.fire({
+    title: "Are you sure?",
+    text: "Do you want to delete this post?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, Delete",
+  }).then((result) => {
+    if (result.value) {
+      $.ajax({
+        url: "ajaxHandlerPHP/ajaxIndex.php",
+        type: "post",
+        data: {
+          postId: postId,
+          postDelete: postDelete,
+        },
+        success(data) {
+          $("#responseDelete").html(data);
           readingPost();
         },
         error(err) {

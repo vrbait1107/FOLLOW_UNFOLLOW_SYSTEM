@@ -39,6 +39,36 @@ if (isset($_POST['insert'])) {
 
 }
 
+//----------------------------------------> DELETING POST
+
+if (isset($_POST['postDelete'])) {
+
+    $sql = "DELETE FROM post_information WHERE user_id = :userId postContent = :post";
+
+    $result = $conn->prepare($sql);
+    $result->bindValue(":userId", $userId);
+    $result->bindValue(":post", $post);
+
+    $result->execute();
+
+    if ($result) {
+        echo "<script>Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Your Post Successfully Deleted'
+            })</script>";
+
+    } else {
+        echo "<script>Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'We failed to delete your post'
+            })</script>";
+
+    }
+
+}
+
 //----------------------------------------> DISPLAYING POST
 
 if (isset($_POST["readingPostData"])) {
@@ -59,10 +89,11 @@ if (isset($_POST["readingPostData"])) {
 
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
 
-            $repost = "button";
+            $deleteIcon = "";
 
             if ($row['user_id'] === $userId) {
-                $repost = "disabled";
+                $deleteIcon = "<i  style= 'font-size:20px' class= 'fa fa-trash text-danger
+                float-right my-2' onclick = 'deletePost($row[post_id])'></i>";
             }
 
             $profileImage = "";
@@ -74,6 +105,8 @@ if (isset($_POST["readingPostData"])) {
             }
 
             $data = '<div class= "jumbotron" style = "padding: 24px 30px 24px 30px" >
+
+            ' . $deleteIcon . '
 
             <div class="row">
 

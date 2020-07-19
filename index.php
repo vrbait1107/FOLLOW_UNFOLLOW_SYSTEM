@@ -41,10 +41,12 @@ if (!isset($_SESSION['user'])) {
               <form action="" method="post" id="postForm" name="postForm">
                 <!-- Response Message -->
                 <div id="responseMessage"></div>
+
                 <div class="form-group">
                   <textarea name="post" id="post" cols="30" rows="3" class="form-control"
                     placeholder="What's happening"></textarea>
                 </div>
+
                 <button type="submit" class="btn btn-primary float-right">Tweet</button>
 
               </form>
@@ -61,8 +63,7 @@ if (!isset($_SESSION['user'])) {
               <!-- Ajax Response Data -->
               <div id="responsePostData"></div>
               <div id="responseComment"></div>
-              <div id="responseRetweet"></div>
-              <div id="responseLike"></div>
+              <div id="responseDelete"></div>
             </div>
           </div>
         </section>
