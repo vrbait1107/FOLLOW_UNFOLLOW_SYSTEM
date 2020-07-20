@@ -51,24 +51,17 @@ $(document).ready(function () {
   $("#postForm").on("submit", function (e) {
     e.preventDefault();
 
-    var post = $("#post").val();
-    let insert = "insert";
-
-    if (post === "") {
-      alert("Story Cannot be Empty");
-      return false;
-    }
-
     $.ajax({
       url: "ajaxHandlerPHP/ajaxIndex.php",
       type: "post",
-      data: {
-        post: post,
-        insert: insert,
-      },
+      data: new FormData(this),
+      contentType: false,
+      processData: false,
       success(data) {
         $("#responseMessage").html(data);
         $("#postForm").trigger("reset");
+        $("#frame").attr("src", "");
+        $("#frame").removeClass("p-5");
         readingPost();
       },
       error() {
@@ -373,3 +366,9 @@ function likeTooltip() {
 
   return tooltipData;
 }
+
+//-------------------------> PREVIEW OF IMAGE BEFORE UPLOAD
+const loadImg = (event) => {
+  $("#frame").attr("src", URL.createObjectURL(event.target.files[0]));
+  $("#frame").addClass("p-5");
+};

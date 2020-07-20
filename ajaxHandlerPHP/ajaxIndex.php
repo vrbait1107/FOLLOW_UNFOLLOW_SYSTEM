@@ -8,33 +8,109 @@ $userEmail = $_SESSION['user'];
 $userId = $_SESSION['userId'];
 
 extract($_POST);
+extract($_FILES);
 
 //----------------------------------------> INSERTING POST
 
 if (isset($_POST['insert'])) {
 
-    $sql = "INSERT INTO post_information (user_id, postContent) VALUES (:userId, :post)";
+    $uploadImageName = $_FILES['uploadImage']['name'];
+    $uploadImageDir = $_FILES['uploadImage']['tmp_name'];
 
-    $result = $conn->prepare($sql);
-    $result->bindValue(":userId", $userId);
-    $result->bindValue(":post", $post);
+    $post = $_POST['post'];
 
-    $result->execute();
+    if ($post !== "" && $uploadImageName == "") {
 
-    if ($result) {
-        echo "<script>Swal.fire({
+        $sql = "INSERT INTO post_information (user_id, postContent, postImage) VALUES (:userId, :post, :postImage)";
+
+        $result = $conn->prepare($sql);
+        $result->bindValue(":userId", $userId);
+        $result->bindValue(":post", $post);
+        $result->bindValue(":postImage", "");
+
+        $result->execute();
+
+        if ($result) {
+            echo "<script>Swal.fire({
                 icon: 'success',
                 title: 'Success',
                 text: 'Your Post Successfully Shared'
             })</script>";
 
-    } else {
-        echo "<script>Swal.fire({
+        } else {
+            echo "<script>Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'We failed to share your post'
             })</script>";
+        }
 
+    } elseif ($post == "" && $uploadImageName !== "") {
+
+        $uploadImageNameNew = rand(11111, 99999) . $uploadImageName;
+
+        move_uploaded_file($uploadImageDir, "C:/xampp/htdocs/follow-unfollow-system/images/" . $uploadImageNameNew);
+
+        $sql = "INSERT INTO post_information (user_id, postContent, postImage) VALUES (:userId, :post, :postImage)";
+
+        $result = $conn->prepare($sql);
+        $result->bindValue(":userId", $userId);
+        $result->bindValue(":post", "");
+        $result->bindValue(":postImage", $uploadImageNameNew);
+
+        $result->execute();
+
+        if ($result) {
+            echo "<script>Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Your Post Successfully Shared'
+            })</script>";
+
+        } else {
+            echo "<script>Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'We failed to share your post'
+            })</script>";
+        }
+
+    } elseif ($post !== "" && $uploadImageName !== "") {
+
+        $uploadImageNameNew = rand(11111, 99999) . $uploadImageName;
+
+        move_uploaded_file($uploadImageDir, "C:/xampp/htdocs/follow-unfollow-system/images/" . $uploadImageNameNew);
+
+        $sql = "INSERT INTO post_information (user_id, postContent, postImage) VALUES (:userId, :post, :postImage)";
+
+        $result = $conn->prepare($sql);
+        $result->bindValue(":userId", $userId);
+        $result->bindValue(":post", $post);
+        $result->bindValue(":postImage", $uploadImageNameNew);
+
+        $result->execute();
+
+        if ($result) {
+            echo "<script>Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Your Post Successfully Shared'
+            })</script>";
+
+        } else {
+            echo "<script>Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'We failed to share your post'
+            })</script>";
+        }
+
+    } else {
+        echo "<script>Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Tweet Cannot Be Empty'
+            })</script>";
     }
 
 }
@@ -43,11 +119,11 @@ if (isset($_POST['insert'])) {
 
 if (isset($_POST['postDelete'])) {
 
-    $sql = "DELETE FROM post_information WHERE user_id = :userId postContent = :post";
+    $sql = "DELETE FROM post_information WHERE user_id = :userId AND post_id = :postId";
 
     $result = $conn->prepare($sql);
     $result->bindValue(":userId", $userId);
-    $result->bindValue(":post", $post);
+    $result->bindValue(":postId", $postId);
 
     $result->execute();
 
@@ -96,12 +172,17 @@ if (isset($_POST["readingPostData"])) {
                 float-right my-2' onclick = 'deletePost($row[post_id])'></i>";
             }
 
+            if ($row["postImage"] !== "") {
+                $img = $row['postImage'];
+                $postImage = '<img src= "images/' . $img . '" class="img-fluid my-2" alt="' . $img . '">';
+            }
+
             $profileImage = "";
 
             if ($row['profileImage'] == "") {
-                $profileImage = '<img src = "profileImage/defaultUser.png" class="img-fluid img-thumbnail"/>';
+                $profileImage = '<img src = "profileImage/defaultUser.png" class="img-fluid rounded-circle"/>';
             } else {
-                $profileImage = '<img src = "profileImage/' . $row['profileImage'] . '" class="img-fluid img-thumbnail"/>';
+                $profileImage = '<img src = "profileImage/' . $row['profileImage'] . '" class="img-fluid rounded-circle"/>';
             }
 
             $data = '<div class= "jumbotron" style = "padding: 24px 30px 24px 30px" >
@@ -119,7 +200,10 @@ if (isset($_POST["readingPostData"])) {
 
             <div class="my-2">
             <span>' . $row['postContent'] . ' </span>
+
             <hr/>
+
+             ' . $postImage . '
 
             ' . retweet_untweet_function($conn, $row["post_id"], $userId) . '
 
@@ -314,12 +398,18 @@ if (isset($_POST["retweet"])) {
         $row = $result1->fetch(PDO::FETCH_ASSOC);
 
         $postContent = $row['postContent'];
+        $postImage = $row['postImage'];
 
-        $sql2 = "INSERT INTO post_information (user_id, postContent) VALUES (:userId, :post)";
+        if ($postImage == "") {
+            $postImage = "";
+        }
+
+        $sql2 = "INSERT INTO post_information (user_id, postContent, postImage) VALUES (:userId, :post, :postImage)";
 
         $result2 = $conn->prepare($sql2);
         $result2->bindValue(":userId", $userId);
         $result2->bindValue(":post", $postContent);
+        $result2->bindValue("postImage", $postImage);
 
         $result2->execute();
 
@@ -493,7 +583,7 @@ function retweet_untweet_function($conn, $postId, $userId)
     return $output;
 }
 
-//--------------------------------> INSRTING COMMENT
+//----------------------------------------->> INSRTING COMMENT
 
 if (isset($_POST["submitComment"])) {
 
@@ -512,7 +602,7 @@ if (isset($_POST["submitComment"])) {
 
 }
 
-//---------------------------------------> FETCHING OLD COMMENT TO RESPECTIVE POST
+//----------------------------------------->> FETCHING OLD COMMENT TO RESPECTIVE POST
 
 if (isset($_POST['fetchComment'])) {
     $sql = "SELECT * FROM comment_information INNER JOIN user_information ON
@@ -553,7 +643,7 @@ comment_information.user_id = user_information.user_id  WHERE
     }
 }
 
-//------------------------------------------->> TOOLTIP FOR LIKE FUNCTIONALITY
+//----------------------------------------->> TOOLTIP FOR LIKE FUNCTIONALITY
 
 if (isset($_POST["likedUsersList"])) {
     $sql = "SELECT * FROM user_information INNER JOIN like_information
