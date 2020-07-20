@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 11, 2020 at 02:15 PM
+-- Generation Time: Jul 20, 2020 at 08:47 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.2
 
@@ -46,7 +46,8 @@ INSERT INTO `comment_information` (`comment_id`, `user_id`, `post_id`, `comment`
 (14, 4, 8, 'Hii, Saurabh', '2020-07-05 14:21:41'),
 (15, 4, 6, 'Hii Vikram', '2020-07-05 14:24:13'),
 (16, 4, 8, 'How are You?', '2020-07-05 14:24:43'),
-(17, 2, 8, 'Hii, Saurabh', '2020-07-07 19:33:54');
+(17, 2, 8, 'Hii, Saurabh', '2020-07-07 19:33:54'),
+(18, 2, 6, 'Good Afternoon', '2020-07-18 13:49:36');
 
 -- --------------------------------------------------------
 
@@ -70,7 +71,8 @@ INSERT INTO `follow_information` (`follow_id`, `followers_id`, `following_id`) V
 (11, 4, 3),
 (13, 4, 2),
 (14, 2, 4),
-(15, 3, 4);
+(15, 3, 4),
+(16, 2, 6);
 
 -- --------------------------------------------------------
 
@@ -89,11 +91,9 @@ CREATE TABLE `like_information` (
 --
 
 INSERT INTO `like_information` (`like_id`, `user_id`, `post_id`) VALUES
-(3, 2, 11),
-(4, 2, 10),
-(5, 2, 7),
-(6, 2, 8),
-(7, 2, 6);
+(12, 2, 8),
+(13, 2, 7),
+(14, 2, 18);
 
 -- --------------------------------------------------------
 
@@ -105,6 +105,7 @@ CREATE TABLE `post_information` (
   `post_id` int(5) NOT NULL,
   `user_id` int(5) NOT NULL,
   `postContent` varchar(255) NOT NULL,
+  `postImage` varchar(100) DEFAULT NULL,
   `postDate` timestamp(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -112,12 +113,11 @@ CREATE TABLE `post_information` (
 -- Dumping data for table `post_information`
 --
 
-INSERT INTO `post_information` (`post_id`, `user_id`, `postContent`, `postDate`) VALUES
-(6, 4, 'Hii, I am Vikram', '2020-06-19 04:07:48.171776'),
-(7, 2, 'Hiii, I am Vishal', '2020-06-19 04:08:34.055839'),
-(8, 3, 'Hii, I am Saurabh', '2020-06-19 04:09:25.553648'),
-(10, 2, 'Hii, I am Vikram', '2020-07-05 18:04:04.720835'),
-(11, 2, 'Hii, I am Saurabh', '2020-07-05 18:04:25.360390');
+INSERT INTO `post_information` (`post_id`, `user_id`, `postContent`, `postImage`, `postDate`) VALUES
+(6, 4, 'Hii, I am Vikram', NULL, '2020-06-19 04:07:48.171776'),
+(7, 2, 'Hiii, I am Vishal', NULL, '2020-06-19 04:08:34.055839'),
+(8, 3, 'Hii, I am Saurabh', NULL, '2020-06-19 04:09:25.553648'),
+(18, 2, 'Good Morning', '49734640px-Hazy_Crazy_Sunrise.jpg', '2020-07-20 06:31:19.199178');
 
 -- --------------------------------------------------------
 
@@ -130,14 +130,6 @@ CREATE TABLE `repost_information` (
   `user_id` int(5) NOT NULL,
   `post_id` int(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `repost_information`
---
-
-INSERT INTO `repost_information` (`repost_id`, `user_id`, `post_id`) VALUES
-(3, 2, 6),
-(4, 2, 8);
 
 -- --------------------------------------------------------
 
@@ -167,7 +159,7 @@ INSERT INTO `user_information` (`user_id`, `username`, `email`, `password`, `nam
 (2, 'Vishal1107', 'vishalbait01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', 'Vishal Bait', 'developer1.jpg', 'Full Stack Developer', 2, '0bf64bc982849a423a82863a571d76', NULL, 'active'),
 (3, 'Saurabh01', 'saurabh01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 2, NULL, NULL, 'active'),
 (4, 'Vikram01', 'vikram01@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 2, NULL, NULL, 'active'),
-(6, 'Sudesh01', 'sudeshbait999@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 0, '17388c5e64261cc11190964da6f68d', NULL, 'active');
+(6, 'Sudesh01', 'sudeshbait999@gmail.com', '$2y$10$soEyKWbmvo3ElJgV.J.EWe1qmbnJjFdUOGM8F9eVgzQoC7R6TDpke', '', NULL, NULL, 1, '17388c5e64261cc11190964da6f68d', NULL, 'active');
 
 --
 -- Indexes for dumped tables
@@ -225,31 +217,31 @@ ALTER TABLE `user_information`
 -- AUTO_INCREMENT for table `comment_information`
 --
 ALTER TABLE `comment_information`
-  MODIFY `comment_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `comment_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `follow_information`
 --
 ALTER TABLE `follow_information`
-  MODIFY `follow_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `follow_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `like_information`
 --
 ALTER TABLE `like_information`
-  MODIFY `like_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `like_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `post_information`
 --
 ALTER TABLE `post_information`
-  MODIFY `post_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `post_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `repost_information`
 --
 ALTER TABLE `repost_information`
-  MODIFY `repost_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `repost_id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user_information`
