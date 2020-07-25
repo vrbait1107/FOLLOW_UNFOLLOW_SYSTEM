@@ -4,6 +4,10 @@ let readingUserProfiles;
 $(document).ready(function () {
   // -------------------------------->READING RECORD
 
+  $("#post").emojioneArea({
+    pickerPosition: "right",
+  });
+
   readingPost = () => {
     readingPostData = "readingPostData";
 
@@ -60,6 +64,7 @@ $(document).ready(function () {
       success(data) {
         $("#responseMessage").html(data);
         $("#postForm").trigger("reset");
+        $("#post").val(null);
         $("#frame").attr("src", "");
         $("#frame").removeClass("p-5");
         readingPost();

@@ -172,6 +172,8 @@ if (isset($_POST["readingPostData"])) {
                 float-right my-2' onclick = 'deletePost($row[post_id])'></i>";
             }
 
+            $postImage = "";
+
             if ($row["postImage"] !== "") {
                 $img = $row['postImage'];
                 $postImage = '<img src= "images/' . $img . '" class="img-fluid my-2" alt="' . $img . '">';
@@ -199,7 +201,7 @@ if (isset($_POST["readingPostData"])) {
             <h3><b>@ ' . $row['username'] . '</b></h3>
 
             <div class="my-2">
-            <span>' . $row['postContent'] . ' </span>
+            <span class="dbPostContent">' . $row['postContent'] . ' </span>
 
             <hr/>
 
