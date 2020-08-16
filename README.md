@@ -1,8 +1,9 @@
-# This Project is Under Developmet
+## This Project is Under Developmet
 
 ## Follow Unfollow System (Like Twitter)
 
-- This is Simple Follow Unfollow System using PHP.
+- This is follow & unfollow system like twitter using html, css, jquery, javascript, bootstrap, ajax, php and mysql database.
+- This project is based on video tutorials of Weblesson Youtube Channel with some modifications of mine.
 
 ## PHP Mailer
 
