@@ -26,8 +26,6 @@
             <div class="sb-sidenav-menu">
                 <div class="nav text-center mt-4">
                     <a class="nav-link" href="index.php"><h5><i class="fa fa-home mx-2"></i>Home</h5></a>
-                    <a class="nav-link" href="#"><h5><i class="fa fa-hashtag mx-2"></i>Explore</h5></a>
-                    <a class="nav-link" href="#"><h5><i class="fa fa-bell mx-2"></i> Notification</h5></a>
                     <a class="nav-link" href="userProfile.php"><h5><i class="fa fa-user mx-2"></i>Profile</h5></a>
                 </div>
 
