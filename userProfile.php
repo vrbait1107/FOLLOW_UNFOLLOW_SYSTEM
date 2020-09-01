@@ -1,7 +1,7 @@
 <?php
 
-// Creating Connection to Database
-require_once "config.php";
+// -------------------->> DB CONFIG
+require_once "config/mysqlConfig.php";
 
 // Staring Session
 session_start();

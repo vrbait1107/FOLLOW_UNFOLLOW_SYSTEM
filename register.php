@@ -1,6 +1,7 @@
 <?php
 
-require_once "config.php";
+// -------------------->> DB CONFIG
+require_once "config/mysqlConfig.php";
 
 ?>
 

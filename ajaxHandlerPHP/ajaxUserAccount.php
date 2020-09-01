@@ -1,18 +1,19 @@
 <?php
 
-// ##### Creating Database Connection
-require_once "../config.php";
+// -------------------->> DB CONFIG
+require_once "../config/mysqlConfig.php";
+
 //####### Starting Session
 session_start();
 
-// ################### USER SESSION VARIABLE
+// -------------------->> USER SESSION VARIABLE
 
 $userId = $_SESSION['userId'];
 
 // Extracting Post data
 extract($_POST);
 
-// ######################## CHANGE PASSWORD
+// -------------------->> CHANGE PASSWORD
 
 if (isset($_POST['changePassword'])) {
 
@@ -88,7 +89,8 @@ if (isset($_POST['changePassword'])) {
 
 }
 
-// ######################  CHANGE EMAIL ADDRESS
+// -------------------->>  CHANGE EMAIL ADDRESS
+
 if (isset($_POST['changeEmail'])) {
 
     $userId = $_SESSION['userId'];
@@ -154,7 +156,7 @@ if (isset($_POST['changeEmail'])) {
 
 }
 
-//##################### DELETE ACCOUNT
+// -------------------->> DELETE ACCOUNT
 
 if (isset($_POST['deleteAccount'])) {
 

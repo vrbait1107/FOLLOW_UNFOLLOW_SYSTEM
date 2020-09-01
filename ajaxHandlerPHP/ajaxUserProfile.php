@@ -1,6 +1,8 @@
 <?php
-// Creating Database Connection
-require_once "../config.php";
+
+// -------------------->> DB CONFIG
+require_once "../config/mysqlConfig.php";
+
 session_start();
 
 $userEmail = $_SESSION['user'];

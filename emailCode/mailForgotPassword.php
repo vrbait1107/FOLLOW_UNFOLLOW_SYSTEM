@@ -1,4 +1,8 @@
 <?php
+
+//--------------------------->> SECRETS
+require_once "../config/Secret.php";
+
 // Mail PHP code For more details read official documentation of PHPMailer Library
 date_default_timezone_set('Etc/UTC');
 require '../PHPMailer/PHPMailerAutoload.php';
@@ -12,10 +16,10 @@ $mail->Port = 587;
 $mail->SMTPSecure = 'tls';
 $mail->SMTPAuth = true;
 // Enter Your Email
-$mail->Username = "YOUR EMAIL USERNAME";
+$mail->Username = "$emailUsername";
 // Enter Your Password
-$mail->Password = "YOUR EMAIL PASSWORD";
-$mail->setFrom('YOUR EMAIL USERNAME', 'The Follow Unfollow System Team');
+$mail->Password = "$emailPassword";
+$mail->setFrom("$emailSetFrom", 'The Follow Unfollow System Team');
 $mail->addReplyTo('non-reply@gmail.com', 'The Follow Unfollow System Team');
 $mail->addAddress($email, $email);
 $mail->Subject = "The Follow Unfollow System follow-unfollow-system PASSWORD RESET";
