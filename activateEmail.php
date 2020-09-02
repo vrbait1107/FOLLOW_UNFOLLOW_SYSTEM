@@ -21,7 +21,7 @@ require_once "config/mysqlConfig.php";
 
 if (isset($_GET['token'])) {
 
-    $token = $_GET['token'];
+    $token = htmlspecialchars($_GET['token']);
 
     $login = "login.php";
 

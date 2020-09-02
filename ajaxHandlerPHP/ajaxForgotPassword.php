@@ -14,6 +14,8 @@ $token = bin2hex(random_bytes(15));
 
 if (isset($_POST['submit'])) {
 
+    $email = htmlspecialchars($email);
+
     //Query
     $sql = "SELECT email FROM user_information WHERE email = :email";
 

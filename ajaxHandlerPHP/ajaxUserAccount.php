@@ -3,7 +3,7 @@
 // -------------------->> DB CONFIG
 require_once "../config/mysqlConfig.php";
 
-//####### Starting Session
+//---------------------->> Starting Session
 session_start();
 
 // -------------------->> USER SESSION VARIABLE

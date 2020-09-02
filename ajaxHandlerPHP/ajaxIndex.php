@@ -18,7 +18,7 @@ if (isset($_POST['insert'])) {
     $uploadImageName = $_FILES['uploadImage']['name'];
     $uploadImageDir = $_FILES['uploadImage']['tmp_name'];
 
-    $post = $_POST['post'];
+    $post = htmlspecialchars($_POST['post']);
 
     if ($post !== "" && $uploadImageName == "") {
 

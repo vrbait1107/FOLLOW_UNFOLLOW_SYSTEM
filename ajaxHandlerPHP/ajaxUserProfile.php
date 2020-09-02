@@ -11,7 +11,8 @@ extract($_POST);
 
 extract($_FILES);
 
-//############ UPDATE PROFILE IMAGE
+//---------------------------->> UPDATE PROFILE IMAGE
+
 if (isset($_FILES['updateProfileImage'])) {
 
     $image = $_FILES['updateProfileImage'];
@@ -57,7 +58,7 @@ if (isset($_FILES['updateProfileImage'])) {
 
 }
 
-// ############# READING RECORD
+// ------------------------->> READING RECORD
 {
     if (isset($_POST["profileData"])) {
 
@@ -80,9 +81,13 @@ if (isset($_FILES['updateProfileImage'])) {
     }
 }
 
-// ########## UPDATING  PROFILE DATA
+// --------------------->> UPDATING  PROFILE DATA
 
 if (isset($_POST["hiddenEmail2"])) {
+
+    $updateName = htmlspecialchars($_POST["updateName"]);
+    $updateBio = htmlspecialchars($_POST['updateBio']);
+    $hiddenEmail2 = htmlspecialchars($_POST["hiddenEmail2"]);
 
     $sql = "UPDATE user_information SET name = :updateName, bio = :updateBio WHERE email = :hiddenEmail2";
 

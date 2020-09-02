@@ -3,7 +3,6 @@
 // -------------------->> DB CONFIG
 require_once "config/mysqlConfig.php";
 
-
 // Staring Session
 session_start();
 
@@ -30,7 +29,7 @@ session_start();
 
 if (isset($_GET['token'])) {
 
-    $token = $_GET['token'];
+    $token = htmlspecialchars($_GET['token']);
 
     if (isset($_POST['resetPassword'])) {
 
@@ -87,7 +86,7 @@ if (isset($_GET['token'])) {
 
                 }
 
-            }else{
+            } else {
                 echo "<script>Swal.fire({
                         icon: 'warning',
                         title: 'Token Time Expired',
