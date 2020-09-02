@@ -3,6 +3,9 @@
 // -------------------->> DB CONFIG
 require_once "config/mysqlConfig.php";
 
+// -------------------->> SECRETS
+require_once "config/Secret.php";
+
 session_start();
 
 if (isset($_SESSION['user'])) {
@@ -19,6 +22,9 @@ if (isset($_SESSION['user'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login Page</title>
   <?php include_once "includes/headerScripts.php";?>
+    <!-- Google Recaptcha -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 
 <body>
@@ -26,50 +32,77 @@ if (isset($_SESSION['user'])) {
 <?php
 
 if (isset($_POST["login"])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
 
-    $sql = "SELECT * FROM user_information WHERE username= :username OR email =:email";
-    $result = $conn->prepare($sql);
+    if (isset($_POST['g-recaptcha-response'])) {
 
-    $result->bindValue(":username", $username);
-    $result->bindValue(":email", $username);
+        $secretKey = $recaptchaSecretKey;
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $_POST['g-recaptcha-response']);
+        $response = json_decode($verifyResponse);
 
-    $result->execute();
+        if ($response->success) {
 
-    $row = $result->fetch(PDO::FETCH_ASSOC);
-    $activeStatus = $row['status'];
-    $dbPassword = $row['password'];
-    $userEmail = $row['email'];
-    $userId = $row['user_id'];
-    $username = $row['username'];
+            $username = htmlspecialchars($_POST['username']);
+            $password = htmlspecialchars($_POST['password']);
 
-    if (password_verify($password, $dbPassword)) {
+            $sql = "SELECT * FROM user_information WHERE username= :username OR email =:email";
+            $result = $conn->prepare($sql);
 
-        if ($activeStatus == "active") {
+            $result->bindValue(":username", $username);
+            $result->bindValue(":email", $username);
 
-            $_SESSION['user'] = $userEmail;
-            $_SESSION['userId'] = $userId;
-            $_SESSION['username'] = $username;
+            $result->execute();
 
-            // Redirecting to Index Page
-            header("Location:index.php");
+            $row = $result->fetch(PDO::FETCH_ASSOC);
+            $activeStatus = $row['status'];
+            $dbPassword = $row['password'];
+            $userEmail = $row['email'];
+            $userId = $row['user_id'];
+            $username = $row['username'];
 
-        } else {
-            echo "<script>Swal.fire({
+            if (password_verify($password, $dbPassword)) {
+
+                if ($activeStatus == "active") {
+
+                    $_SESSION['user'] = $userEmail;
+                    $_SESSION['userId'] = $userId;
+                    $_SESSION['username'] = $username;
+
+                    // Redirecting to Index Page
+                    header("Location:index.php");
+
+                } else {
+                    echo "<script>Swal.fire({
               icon: 'warning',
               title: 'Activate Your Account',
               text: 'Please activate your Account'
             })</script>";
 
-        }
+                }
 
-    } else {
-        echo "<script>Swal.fire({
+            } else {
+                echo "<script>Swal.fire({
               icon: 'error',
               title: 'Unable to Login',
               text: 'Please Check Your Credentials'
             })</script>";
+
+            }
+
+        } else {
+            echo "<script>Swal.fire({
+            icon: 'warning',
+            title: 'Google Recaptcha Error',
+            text: 'Something Went Wrong With G-Recaptcha'
+          })</script>";
+
+        }
+
+    } else {
+        echo "<script>Swal.fire({
+            icon: 'warning',
+            title: 'Google Recaptcha Error',
+            text: 'Please fill Google Recaptcha'
+          })</script>";
 
     }
 }
@@ -96,6 +129,10 @@ if (isset($_POST["login"])) {
               <label for="password">Password</label>
               <input type="password" name="password" id="password" class="form-control"
                 placeholder="Enter Your Password">
+            </div>
+
+            <div class="text-center my-2">
+              <div class="g-recaptcha text-center" data-sitekey=<?php echo $recaptchaSiteKey; ?>></div>
             </div>
 
             <a href="forgotPassword.php" class="text-danger font-sans">Forgot Password?</a>

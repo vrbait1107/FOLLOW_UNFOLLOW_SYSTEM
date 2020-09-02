@@ -3,6 +3,9 @@
 // -------------------->> DB CONFIG
 require_once "config/mysqlConfig.php";
 
+// -------------------->> SECRETS
+require_once "config/Secret.php";
+
 ?>
 
 
@@ -14,6 +17,9 @@ require_once "config/mysqlConfig.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Registration Page</title>
   <?php include_once "includes/headerScripts.php";?>
+   <!-- Google Recaptcha -->
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 </head>
 
 <body>
@@ -22,82 +28,108 @@ require_once "config/mysqlConfig.php";
 
 if (isset($_POST["register"])) {
 
-    $username = $_POST["username"];
-    $email = $_POST['email'];
-    $password = $_POST['password'];
-    $confirmPassword = $_POST["confirmPassword"];
-    $token = bin2hex(random_bytes(15));
+    if (isset($_POST['g-recaptcha-response'])) {
 
-    if ($password == $confirmPassword) {
+        $secretKey = $recaptchaSecretKey;
+        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $_POST['g-recaptcha-response']);
+        $response = json_decode($verifyResponse);
 
-        $hashPassword = password_hash($password, PASSWORD_BCRYPT);
+        if ($response->success) {
 
-        $sql = "SELECT *  FROM user_information WHERE username= :username";
-        $result = $conn->prepare($sql);
-        $result->bindValue(":username", $username);
-        $result->execute();
+            $username = htmlspecialchars($_POST["username"]);
+            $email = htmlspecialchars($_POST['email']);
+            $password = htmlspecialchars($_POST['password']);
+            $confirmPassword = htmlspecialchars($_POST["confirmPassword"]);
 
-        // Checking  Username Already Exist or Not
-        if ($result->rowCount() > 0) {
-            echo "<script>Swal.fire({
+            $token = bin2hex(random_bytes(15));
+
+            if ($password == $confirmPassword) {
+
+                $hashPassword = password_hash($password, PASSWORD_BCRYPT);
+
+                $sql = "SELECT *  FROM user_information WHERE username= :username";
+                $result = $conn->prepare($sql);
+                $result->bindValue(":username", $username);
+                $result->execute();
+
+                // Checking  Username Already Exist or Not
+                if ($result->rowCount() > 0) {
+                    echo "<script>Swal.fire({
                 icon: 'warning',
                 title: 'Warning',
                 text: 'Username Already Taken Try Another'
               })</script>";
 
-        } else {
+                } else {
 
-            $tokenDate = date("Y-m-d H:i:s");
-            $tokenDateMain = date('Y-m-d H:i:s', strtotime('+1 day', strtotime($tokenDate)));
+                    $tokenDate = date("Y-m-d H:i:s");
+                    $tokenDateMain = date('Y-m-d H:i:s', strtotime('+1 day', strtotime($tokenDate)));
 
-            // Query
-            $sql = "INSERT INTO user_information (username, email, password, token, tokenDate)
+                    // Query
+                    $sql = "INSERT INTO user_information (username, email, password, token, tokenDate)
             VALUES (:username, :email, :password, :token, :tokenDateMain)";
 
-            //Preparing Query
-            $result = $conn->prepare($sql);
+                    //Preparing Query
+                    $result = $conn->prepare($sql);
 
-            //Binding Values
-            $result->bindValue(":username", $username);
-            $result->bindValue(":email", $email);
-            $result->bindValue(":password", $hashPassword);
-            $result->bindValue(":token", $token);
-            $result->bindValue(":tokenDateMain", $tokenDateMain);
+                    //Binding Values
+                    $result->bindValue(":username", $username);
+                    $result->bindValue(":email", $email);
+                    $result->bindValue(":password", $hashPassword);
+                    $result->bindValue(":token", $token);
+                    $result->bindValue(":tokenDateMain", $tokenDateMain);
 
-            // Executing Query
-            $result->execute();
+                    // Executing Query
+                    $result->execute();
 
-            if ($result) {
+                    if ($result) {
 
-                // Include Email Code
-                include_once "./emailCode/emailRegister.php";
+                        // Include Email Code
+                        include_once "./emailCode/emailRegister.php";
 
-                if (!$mail->send()) {
-                    echo "Mailer Error: " . $mail->ErrorInfo;
-                } else {
-                    echo "<script>Swal.fire({
+                        if (!$mail->send()) {
+                            echo "Mailer Error: " . $mail->ErrorInfo;
+                        } else {
+                            echo "<script>Swal.fire({
                         icon: 'success',
                         title: 'Activate Your Account',
                         text: 'Check Your Email for activate your account'
                       })</script>";
-                }
+                        }
 
-            } else {
-                echo "<script>Swal.fire({
+                    } else {
+                        echo "<script>Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'You are failed to register'
               })</script>";
 
-            }
+                    }
 
-        }
+                }
 
-    } else {
-        echo "<script>Swal.fire({
+            } else {
+                echo "<script>Swal.fire({
             icon: 'warning',
             title: 'Warning',
             text: 'Password & Confirm Password Field are not Matching'
+          })</script>";
+
+            }
+
+        } else {
+            echo "<script>Swal.fire({
+            icon: 'warning',
+            title: 'Google Recaptcha Error',
+            text: 'Something Went Wrong with G-recaptcha'
+          })</script>";
+
+        }
+    } else {
+        echo "<script>Swal.fire({
+            icon: 'warning',
+            title: 'Google Recaptcha Error',
+            text: 'Please fill Google Recaptcha'
           })</script>";
 
     }
@@ -137,6 +169,10 @@ if (isset($_POST["register"])) {
             <input type="password" name="confirmPassword" id="confirmPassword" class="form-control"
               placeholder="Confirm Your Password">
           </div>
+
+           <div class="text-center my-2">
+              <div class="g-recaptcha text-center" data-sitekey=<?php echo $recaptchaSiteKey; ?>></div>
+            </div>
 
           <input type="submit" value="Register" name="register" class="btn btn-primary btn-block rounded-pill">
         </form>
