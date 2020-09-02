@@ -6,7 +6,22 @@
 ## PHP Mailer
 
 - This project use PHP Mailer library for email purpose, So you must mention your email username and password in script, for more details and documentation of PHP Mailer library go to https://github.com/PHPMailer/PHPMailer
-- To Use PHP Mailer Library functionality go to emailCode folder and mention your email username and password in PHP Scripts.
+- Go to config folder folder
+- Rename demo-Secret.php to Secret.php if not rename before.
+- Open Secret.php file update the below constant values (API Keys)
+  1.  emailUsername – Gmail Username
+  2.  emailPassword - Gmail Password
+  3.  emailSetFrom - Email Set From
+
+## Google Recaptcha
+
+- This Project use google recaptcha v2 Checkbox for security purpose.
+- To use this functionality go to google recaptch Website https://www.google.com/recaptcha/intro/v3.html and Go to console and generate API Keys (data site key and secret Key).
+- Go to config folder folder
+- Rename demo-Secret.php to Secret.php if not rename before.
+- Open Secret.php file update the below constant values (API Keys)
+  1.  recaptchaSiteKey – Site Key Provided by Google Recaptcha Admin
+  2.  recaptchaSecretKey - Secret Key Provided by Google Recaptcha Admin
 
 ## Technology Used for this project
 
