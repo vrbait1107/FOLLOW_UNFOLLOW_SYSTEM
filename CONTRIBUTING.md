@@ -1,6 +1,6 @@
 # Contributing to Follow Unfollow System.
 
-## Please feel free to contibute in this project.
+## Please feel free to contribute in this repository as well as other repositories of this GitHub account.
 
 We want to make contributing to this project as easy as possible, whether it's:
 
@@ -16,7 +16,7 @@ We use github to host code, to track issues and feature requests, as well as acc
 
 ## Report bugs using Github's issues
 
-We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/Vishal1107/FOLLOW_UNFOLLOW_SYSTEM/issues); it's that easy!
+We use GitHub issues to track public bugs. Report a bug by [opening a new issue](https://github.com/vrbait1107/FOLLOW_UNFOLLOW_SYSTEM/issues); it's that easy!
 
 ## Write bug reports with detail, background, and sample code
 
@@ -40,7 +40,7 @@ Pull requests are the best way to propose changes to the codebase (we use [Githu
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under its GPL-3.0 License.
+By contributing, you agree that your contributions will be licensed under its MIT License.
 
 ## References
 
