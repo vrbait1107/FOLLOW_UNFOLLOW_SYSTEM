@@ -20,8 +20,23 @@
 - Go to config folder folder
 - Rename demo-Secret.php to Secret.php if not rename before.
 - Open Secret.php file update the below constant values (API Keys)
+
   1.  recaptchaSiteKey – Site Key Provided by Google Recaptcha Admin
   2.  recaptchaSecretKey - Secret Key Provided by Google Recaptcha Admin
+
+  ## License
+
+Event Branding Application is [MIT licensed](./LICENSE).
+
+## Contributing Guide
+
+- Read our [Contributing Guide](./CONTRIBUTING.md) to learn about our development process, how to propose bugfixes and improvements, and how to build and test your changes to Follow Unfollow System.
+- Please feel free to contribute in this project as well as other project in this account.
+
+## Database
+
+1. We have used Mysql Database for this project.
+2. Sql file available in Database folder.
 
 ## Technology Used for this project
 
