@@ -19,7 +19,7 @@ if (!isset($_SESSION['user'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>User Profile</title>
+    <title>FOLLOW UNFOLLOW SYSTEM | USER PROFILE</title>
 
     <!-- header Scripts and Links -->
     <?php include_once "includes/headerScripts.php";?>

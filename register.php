@@ -15,7 +15,7 @@ require_once "config/Secret.php";
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Registration Page</title>
+  <title>FOLLOW UNFOLLOW SYSTEM | REGISTER</title>
   <?php include_once "includes/headerScripts.php";?>
    <!-- Google Recaptcha -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
@@ -162,6 +162,9 @@ if (isset($_POST["register"])) {
           <div class="form-group">
             <label for="password">Password</label>
             <input type="password" name="password" id="password" class="form-control" placeholder="Enter Your Password">
+             <small class="text-danger">Password should Contain atleast 8 Character, Minimum one uppercase letter,
+               Minimum one lowercase letter,
+               minimum one number, Minimum one special character. </small>
           </div>
 
           <div class="form-group">

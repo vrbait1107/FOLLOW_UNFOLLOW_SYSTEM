@@ -9,7 +9,7 @@ require_once "config/mysqlConfig.php";
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activate Email</title>
+    <title>FOLLOW UNFOLLOW SYSTEM | ACTIVATE EMAIL</title>
 
     <!-- header Scripts and Links -->
     <?php include_once "includes/headerScripts.php";?>

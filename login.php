@@ -20,7 +20,7 @@ if (isset($_SESSION['user'])) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Page</title>
+  <title>FOLLOW UNFOLLOW SYSTEM | LOGIN</title>
   <?php include_once "includes/headerScripts.php";?>
     <!-- Google Recaptcha -->
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>

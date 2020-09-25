@@ -18,7 +18,7 @@ if (!isset($_SESSION['user'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Account</title>
+    <title>FOLLOW UNFOLLOW SYSTEM | USER ACCOUNT</title>
 
     <!-- header Scripts and Links -->
     <?php include_once "includes/headerScripts.php";?>

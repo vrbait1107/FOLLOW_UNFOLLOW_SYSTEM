@@ -24,9 +24,9 @@
   1.  recaptchaSiteKey – Site Key Provided by Google Recaptcha Admin
   2.  recaptchaSecretKey - Secret Key Provided by Google Recaptcha Admin
 
-  ## License
+## License
 
-Event Branding Application is [MIT licensed](./LICENSE).
+Follow Unfollow System is [MIT licensed](./LICENSE).
 
 ## Contributing Guide
 

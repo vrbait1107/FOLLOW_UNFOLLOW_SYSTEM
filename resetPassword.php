@@ -1,4 +1,4 @@
-    <?php
+<?php
 
 // -------------------->> DB CONFIG
 require_once "config/mysqlConfig.php";
@@ -14,7 +14,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password</title>
+    <title>FOLLOW UNFOLLOW SYSTEM | RESET PASSWORD</title>
 
     <!-- header Scripts and Links -->
     <?php include_once "includes/headerScripts.php";?>
@@ -72,17 +72,17 @@ if (isset($_GET['token'])) {
 
                 if ($result) {
                     echo "<script>Swal.fire({
-            icon: 'success',
-            title: 'Successful',
-            text: 'Your Password Reset Successful, Please Login to Continue'
-            })</script>";
+                            icon: 'success',
+                            title: 'Successful',
+                            text: 'Your Password Reset Successful, Please Login to Continue'
+                        })</script>";
 
                 } else {
                     echo "<script>Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'We failed to Your Password'
-            })</script>";
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'We failed to Your Password'
+                        })</script>";
 
                 }
 
@@ -97,10 +97,10 @@ if (isset($_GET['token'])) {
 
         } else {
             echo "<script>Swal.fire({
-            icon: 'warning',
-            title: 'Warning',
-            text: 'Password and Confirm Password Field does not match'
-            })</script>";
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'Password and Confirm Password Field does not match'
+                })</script>";
 
         }
     }
@@ -119,11 +119,15 @@ if (isset($_GET['token'])) {
                     <hr>
 
                     <div class="card-body">
-                        <form action="" method="post">
+                        <form action="" method="post" id="resetPasswordForm">
 
                             <div class="form-group">
                                 <label>Enter New Password</label>
                                 <input type="password" class="form-control" name="newPassword">
+                                <small class="text-danger">Password should Contain atleast 8 Character, Minimum one
+                                    uppercase letter,
+                                    Minimum one lowercase letter,
+                                    minimum one number, Minimum one special character. </small>
                             </div>
 
                             <div class="form-group">
@@ -145,6 +149,9 @@ if (isset($_GET['token'])) {
 
     <!-- Footer Script -->
     <?php include_once "includes/footerScripts.php";?>
+
+    <!-- Javascript -->
+    <script src="js/resetPassword.js"></script>
 
     <?php
 // closing Database Connnection
