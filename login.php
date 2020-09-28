@@ -6,8 +6,10 @@ require_once "config/mysqlConfig.php";
 // -------------------->> SECRETS
 require_once "config/Secret.php";
 
+// -------------------->> START SESSION
 session_start();
 
+// -------------------->> CHECKING USER
 if (isset($_SESSION['user'])) {
     header("Location:index.php");
 }
@@ -31,80 +33,87 @@ if (isset($_SESSION['user'])) {
 
 <?php
 
-if (isset($_POST["login"])) {
+try {
 
-    if (isset($_POST['g-recaptcha-response'])) {
+    if (isset($_POST["login"])) {
 
-        $secretKey = $recaptchaSecretKey;
-        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $_POST['g-recaptcha-response']);
-        $response = json_decode($verifyResponse);
+        if (isset($_POST['g-recaptcha-response'])) {
 
-        if ($response->success) {
+            $secretKey = $recaptchaSecretKey;
+            $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $_POST['g-recaptcha-response']);
+            $response = json_decode($verifyResponse);
 
-            $username = htmlspecialchars($_POST['username']);
-            $password = htmlspecialchars($_POST['password']);
+            if ($response->success) {
 
-            $sql = "SELECT * FROM user_information WHERE username= :username OR email =:email";
-            $result = $conn->prepare($sql);
+                # Avoid XSS
+                $username = htmlspecialchars($_POST['username']);
+                $password = htmlspecialchars($_POST['password']);
 
-            $result->bindValue(":username", $username);
-            $result->bindValue(":email", $username);
+                $sql = "SELECT * FROM user_information WHERE username= :username OR email =:email";
+                $result = $conn->prepare($sql);
 
-            $result->execute();
+                $result->bindValue(":username", $username);
+                $result->bindValue(":email", $username);
 
-            $row = $result->fetch(PDO::FETCH_ASSOC);
-            $activeStatus = $row['status'];
-            $dbPassword = $row['password'];
-            $userEmail = $row['email'];
-            $userId = $row['user_id'];
-            $username = $row['username'];
+                $result->execute();
 
-            if (password_verify($password, $dbPassword)) {
+                $row = $result->fetch(PDO::FETCH_ASSOC);
+                $activeStatus = $row['status'];
+                $dbPassword = $row['password'];
+                $userEmail = $row['email'];
+                $userId = $row['user_id'];
+                $username = $row['username'];
 
-                if ($activeStatus == "active") {
+                # Verify Password
+                if (password_verify($password, $dbPassword)) {
 
-                    $_SESSION['user'] = $userEmail;
-                    $_SESSION['userId'] = $userId;
-                    $_SESSION['username'] = $username;
+                    if ($activeStatus == "active") {
 
-                    // Redirecting to Index Page
-                    header("Location:index.php");
+                        $_SESSION['user'] = $userEmail;
+                        $_SESSION['userId'] = $userId;
+                        $_SESSION['username'] = $username;
+
+                        # Redirect to Index Page
+                        header("Location:index.php");
+
+                    } else {
+                        echo "<script>Swal.fire({
+                        icon: 'warning',
+                        title: 'Activate Your Account',
+                        text: 'Please activate your Account'
+                      })</script>";
+                    }
 
                 } else {
                     echo "<script>Swal.fire({
-              icon: 'warning',
-              title: 'Activate Your Account',
-              text: 'Please activate your Account'
-            })</script>";
-
+                    icon: 'error',
+                    title: 'Unable to Login',
+                    text: 'Please Check Your Credentials'
+                  })</script>";
                 }
 
             } else {
                 echo "<script>Swal.fire({
-              icon: 'error',
-              title: 'Unable to Login',
-              text: 'Please Check Your Credentials'
-            })</script>";
-
+                icon: 'warning',
+                title: 'Google Recaptcha Error',
+                text: 'Something Went Wrong With G-Recaptcha'
+              })</script>";
             }
 
         } else {
             echo "<script>Swal.fire({
             icon: 'warning',
             title: 'Google Recaptcha Error',
-            text: 'Something Went Wrong With G-Recaptcha'
-          })</script>";
-
-        }
-
-    } else {
-        echo "<script>Swal.fire({
-            icon: 'warning',
-            title: 'Google Recaptcha Error',
             text: 'Please fill Google Recaptcha'
           })</script>";
 
+        }
     }
+
+} catch (PDOException $e) {
+    echo "<script>alert('We are sorry, there seems to be a problem with our systems. Please try again.');</script>";
+    # Development Purpose Error Only
+    echo "Error " . $e->getMessage();
 }
 
 ?>

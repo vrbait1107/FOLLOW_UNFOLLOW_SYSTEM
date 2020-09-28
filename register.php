@@ -26,113 +26,126 @@ require_once "config/Secret.php";
 
   <?php
 
-if (isset($_POST["register"])) {
+try {
 
-    if (isset($_POST['g-recaptcha-response'])) {
+    if (isset($_POST["register"])) {
 
-        $secretKey = $recaptchaSecretKey;
-        $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $_POST['g-recaptcha-response']);
-        $response = json_decode($verifyResponse);
+        if (isset($_POST['g-recaptcha-response'])) {
 
-        if ($response->success) {
+            $secretKey = $recaptchaSecretKey;
+            $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $_POST['g-recaptcha-response']);
+            $response = json_decode($verifyResponse);
 
-            $username = htmlspecialchars($_POST["username"]);
-            $email = htmlspecialchars($_POST['email']);
-            $password = htmlspecialchars($_POST['password']);
-            $confirmPassword = htmlspecialchars($_POST["confirmPassword"]);
+            if ($response->success) {
 
-            $token = bin2hex(random_bytes(15));
+                # Avoid XSS
+                $username = htmlspecialchars($_POST["username"]);
+                $email = htmlspecialchars($_POST['email']);
+                $password = htmlspecialchars($_POST['password']);
+                $confirmPassword = htmlspecialchars($_POST["confirmPassword"]);
 
-            if ($password == $confirmPassword) {
+                # Generate Token
+                $token = bin2hex(random_bytes(15));
 
-                $hashPassword = password_hash($password, PASSWORD_BCRYPT);
+                # Check Password & Confirm Password are Equal.
+                if ($password == $confirmPassword) {
 
-                $sql = "SELECT *  FROM user_information WHERE username= :username";
-                $result = $conn->prepare($sql);
-                $result->bindValue(":username", $username);
-                $result->execute();
+                    # Hash Password
+                    $hashPassword = password_hash($password, PASSWORD_BCRYPT);
 
-                // Checking  Username Already Exist or Not
-                if ($result->rowCount() > 0) {
-                    echo "<script>Swal.fire({
+                    $sql = "SELECT *  FROM user_information WHERE username= :username";
+                    $result = $conn->prepare($sql);
+                    $result->bindValue(":username", $username);
+                    $result->execute();
+
+                    # Checking  Username Already Exist
+                    if ($result->rowCount() > 0) {
+                        echo "<script>Swal.fire({
                 icon: 'warning',
                 title: 'Warning',
                 text: 'Username Already Taken Try Another'
               })</script>";
 
-                } else {
+                    } else {
 
-                    $tokenDate = date("Y-m-d H:i:s");
-                    $tokenDateMain = date('Y-m-d H:i:s', strtotime('+1 day', strtotime($tokenDate)));
+                        # Set Time for Token
+                        $tokenDate = date("Y-m-d H:i:s");
+                        $tokenDateMain = date('Y-m-d H:i:s', strtotime('+1 day', strtotime($tokenDate)));
 
-                    // Query
-                    $sql = "INSERT INTO user_information (username, email, password, token, tokenDate)
+                        # Query
+                        $sql = "INSERT INTO user_information (username, email, password, token, tokenDate)
             VALUES (:username, :email, :password, :token, :tokenDateMain)";
 
-                    //Preparing Query
-                    $result = $conn->prepare($sql);
+                        # Preparing Query
+                        $result = $conn->prepare($sql);
 
-                    //Binding Values
-                    $result->bindValue(":username", $username);
-                    $result->bindValue(":email", $email);
-                    $result->bindValue(":password", $hashPassword);
-                    $result->bindValue(":token", $token);
-                    $result->bindValue(":tokenDateMain", $tokenDateMain);
+                        # Binding Values
+                        $result->bindValue(":username", $username);
+                        $result->bindValue(":email", $email);
+                        $result->bindValue(":password", $hashPassword);
+                        $result->bindValue(":token", $token);
+                        $result->bindValue(":tokenDateMain", $tokenDateMain);
 
-                    // Executing Query
-                    $result->execute();
+                        # Executing Query
+                        $result->execute();
 
-                    if ($result) {
+                        if ($result) {
 
-                        // Include Email Code
-                        include_once "./emailCode/emailRegister.php";
+                            # Include Email Code
+                            include_once "./emailCode/emailRegister.php";
 
-                        if (!$mail->send()) {
-                            echo "Mailer Error: " . $mail->ErrorInfo;
+                            if (!$mail->send()) {
+                                echo "Mailer Error: " . $mail->ErrorInfo;
+
+                            } else {
+                                echo "<script>Swal.fire({
+                                icon: 'success',
+                                title: 'Activate Your Account',
+                                text: 'Check Your Email for activate your account'
+                              })</script>";
+                            }
+
                         } else {
                             echo "<script>Swal.fire({
-                        icon: 'success',
-                        title: 'Activate Your Account',
-                        text: 'Check Your Email for activate your account'
-                      })</script>";
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'You are failed to register'
+                          })</script>";
                         }
 
-                    } else {
-                        echo "<script>Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'You are failed to register'
-              })</script>";
-
                     }
+
+                } else {
+                    echo "<script>Swal.fire({
+                    icon: 'warning',
+                    title: 'Warning',
+                    text: 'Password & Confirm Password Field are not Matching'
+                  })</script>";
 
                 }
 
             } else {
                 echo "<script>Swal.fire({
-            icon: 'warning',
-            title: 'Warning',
-            text: 'Password & Confirm Password Field are not Matching'
-          })</script>";
+                icon: 'warning',
+                title: 'Google Recaptcha Error',
+                text: 'Something Went Wrong with G-recaptcha'
+              })</script>";
 
             }
-
         } else {
             echo "<script>Swal.fire({
-            icon: 'warning',
-            title: 'Google Recaptcha Error',
-            text: 'Something Went Wrong with G-recaptcha'
-          })</script>";
-
-        }
-    } else {
-        echo "<script>Swal.fire({
             icon: 'warning',
             title: 'Google Recaptcha Error',
             text: 'Please fill Google Recaptcha'
           })</script>";
 
+        }
     }
+
+} catch (PDOException $e) {
+    echo "<script>alert('We are sorry, there seems to be a problem with our systems. Please try again.');</script>";
+    # Development Purpose Error Only
+    echo "Error " . $e->getMessage();
 }
 
 ?>

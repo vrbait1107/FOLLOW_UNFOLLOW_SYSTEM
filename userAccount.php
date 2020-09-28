@@ -1,14 +1,16 @@
 <?php
 
-/// -------------------->> DB CONFIG
+// -------------------->> DB CONFIG
 require_once "config/mysqlConfig.php";
 
-// Staring Session
+// --------------------->> START SESSION
 session_start();
 
+// --------------------->> CHECK USER
 if (!isset($_SESSION['user'])) {
     header("location:login.php");
 }
+
 
 ?>
 
