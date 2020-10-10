@@ -1,7 +1,7 @@
 <?php
 
 //--------------------------->> SECRETS
-require_once "../config/Secret.php";
+require_once "config/Secret.php";
 
 // (Please Read Documentation https: //github.com/PHPMailer/PHPMailer
 

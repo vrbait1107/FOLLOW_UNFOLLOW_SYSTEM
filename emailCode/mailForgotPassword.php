@@ -1,11 +1,11 @@
 <?php
 
 //--------------------------->> SECRETS
-require_once "../config/Secret.php";
+require_once "config/Secret.php";
 
 // Mail PHP code For more details read official documentation of PHPMailer Library
 date_default_timezone_set('Etc/UTC');
-require '../PHPMailer/PHPMailerAutoload.php';
+require 'PHPMailer/PHPMailerAutoload.php';
 
 $mail = new PHPMailer;
 $mail->isSMTP();
